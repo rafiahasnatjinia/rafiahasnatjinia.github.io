@@ -23,6 +23,13 @@
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
   <link rel="shortcut icon" href="assets/favicon.ico">
 
+  <!-- Theme color (light/dark) -->
+  <meta name="theme-color" content="#185a9d" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+
+  <!-- PWA manifest (add assets/manifest.webmanifest from checklist below) -->
+  <link rel="manifest" href="assets/manifest.webmanifest">
+
   <!-- Preload hero image for LCP -->
   <link rel="preload" as="image" href="assets/profile.jpg">
 
@@ -93,7 +100,7 @@
     .section { padding: 3rem 0; scroll-margin-top: 7rem; }
     .section h2 { font-size: clamp(1.6rem, 4vw, 2rem); margin: 0 0 1.5rem; color: var(--link); position: relative; }
     .section h2::after { content: ""; width: 60px; height: 4px; background: linear-gradient(to right, var(--accent-start), var(--accent-end)); position: absolute; bottom: -0.5rem; left: 0; }
-    .card { background: var(--panel); border: 1px solid var(--chip); border-radius: 1rem; padding: 1.8rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+    .card { background: var(--panel); border: 1px solid var(--chip); border-radius: 1rem; padding: 1.8rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); transition: all 0.3s ease; content-visibility: auto; contain-intrinsic-size: 600px; }
     .card:hover { transform: translateY(-6px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
     .two-col { display: grid; gap: 2rem; }
     @media (min-width: 900px) { .two-col { grid-template-columns: repeat(2, 1fr); } }
@@ -119,9 +126,7 @@
     a:focus-visible, button:focus-visible, .cta:focus-visible { outline: 3px solid var(--link); outline-offset: 4px; border-radius: 0.75rem; }
     .reveal { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
     .reveal.visible { opacity: 1; transform: none; }
-    @media (prefers-reduced-motion: reduce) {
-      .reveal, .reveal.visible { opacity: 1; transform: none; transition: none; }
-    }
+    @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { opacity: 1; transform: none; transition: none; } }
 
     /* Footer */
     footer { padding: 3rem 0; text-align: center; font-size: 1rem; color: var(--muted); border-top: 2px solid var(--chip); }
@@ -137,6 +142,7 @@
     }
   </style>
 
+  <!-- Schema.org Person -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -152,6 +158,20 @@
       "https://www.linkedin.com/in/rafia-hasnat-jinia",
       "https://www.researchgate.net/profile/Rafia-Hasnat-Jinia"
     ]
+  }
+  </script>
+
+  <!-- Optional: structured data for the article (keep if accurate) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Mechanistic study of unoxidized tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds",
+    "author": [{"@type":"Person","name":"Rafia Hasnat Jinia"}],
+    "datePublished": "2025-01-01",
+    "isPartOf": {"@type": "PublicationVolume","name": "International Journal of Biological Macromolecules","volumeNumber": "330"},
+    "identifier": {"@type":"PropertyValue","propertyID":"DOI","value":"10.1016/j.ijbiomac.2025.147837"},
+    "url": "https://doi.org/10.1016/j.ijbiomac.2025.147837"
   }
   </script>
 </head>
@@ -187,8 +207,7 @@
           height="250"
           decoding="async"
           fetchpriority="high"
-          sizes="(min-width: 900px) 250px, 200px"
-        >
+          sizes="(min-width: 900px) 250px, 200px">
         <h1 class="name">Rafia Hasnat Jinia</h1>
         <h2 class="headline">Biomedical Engineer &amp; Ph.D. Aspirant</h2>
         <p class="lead">Developing innovative biomaterials to combat antibacterial resistance and enhance wound healing, with a focus on translating research into clinical solutions.</p>
@@ -273,8 +292,9 @@
       <h2>Publications</h2>
       <div class="pub-filter" role="toolbar" aria-label="Filter publications">
         <button type="button" data-filter="all" aria-pressed="true">All</button>
-        <button type="button" data-filter="published">Published</button>
+        <button type="button" data-filter="published" aria-pressed="false">Published</button>
       </div>
+      <div id="pub-status" class="sr-only" aria-live="polite"></div>
       <div class="list" id="pub-list">
         <article class="pub" data-status="published">
           <div class="kicker">Published</div>
@@ -480,29 +500,56 @@
   </main>
 
   <script>
+    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // Mobile menu: open/close + focus restore + Esc-to-close
     const menuBtn = document.getElementById('menuBtn');
     const nav = document.getElementById('primaryNav');
+    let lastFocus = null;
+
+    function openNav() {
+      lastFocus = document.activeElement;
+      nav.classList.add('open');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      nav.querySelector('a')?.focus();
+    }
+    function closeNav() {
+      nav.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      lastFocus?.focus();
+    }
+
     menuBtn.addEventListener('click', () => {
-      const isOpen = nav.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', isOpen);
+      const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
+      isOpen ? closeNav() : openNav();
     });
+
     nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      if (window.innerWidth < 900) {
-        nav.classList.remove('open');
-        menuBtn.setAttribute('aria-expanded', 'false');
-      }
+      if (window.innerWidth < 900) closeNav();
     }));
 
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeNav();
+    });
+
+    // Publication filter: accessible state + live updates
     const pubButtons = document.querySelectorAll('.pub-filter button');
     const pubs = document.querySelectorAll('#pub-list .pub');
+    const pubStatus = document.getElementById('pub-status');
+
     pubButtons.forEach(btn => btn.addEventListener('click', () => {
       const filter = btn.dataset.filter;
-      pubs.forEach(pub => pub.style.display = (filter === 'all' || pub.dataset.status === filter) ? '' : 'none');
-      pubButtons.forEach(b => b.setAttribute('aria-pressed', b.dataset.filter === filter));
+      pubs.forEach(pub => {
+        const show = (filter === 'all' || pub.dataset.status === filter);
+        pub.style.display = show ? '' : 'none';
+      });
+      pubButtons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      const visible = [...pubs].filter(p => p.style.display !== 'none').length;
+      pubStatus.textContent = `${visible} item${visible!==1?'s':''} shown (${filter})`;
     }));
 
+    // Reveal on scroll (respect reduced motion)
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -513,6 +560,25 @@
         });
       }, { threshold: 0.2 });
       document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    // Scroll-spy: highlight current section in nav
+    const sections = [...document.querySelectorAll('.hero, main .section')];
+    const navLinks = [...document.querySelectorAll('nav.primary a')];
+    const linkFor = (id) => navLinks.find(a => a.getAttribute('href') === `#${id}`);
+
+    if ('IntersectionObserver' in window) {
+      const spy = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(a => a.classList.remove('active'));
+            const link = linkFor(entry.target.id);
+            if (link) link.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+      sections.forEach(sec => sec.id && spy.observe(sec));
     }
   </script>
 </body>
