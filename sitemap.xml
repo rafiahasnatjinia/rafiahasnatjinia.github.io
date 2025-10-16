@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://rafiahasnatjinia.github.io/</loc>
+    <lastmod>2025-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://rafiahasnatjinia.github.io/assets/profile.jpg</image:loc>
+      <image:caption>Portrait of Rafia Hasnat Jinia</image:caption>
+      <image:title>Rafia Hasnat Jinia</image:title>
+    </image:image>
+  </url>
+
+  <!-- CV (PDF) -->
+  <url>
+    <loc>https://rafiahasnatjinia.github.io/assets/Rafia_Hasnat_Jinia_CV.pdf</loc>
+    <lastmod>2025-10-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>
