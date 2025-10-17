@@ -38,14 +38,16 @@
       --bg:#fff;--panel:#f8fafc;--text:#1e293b;--muted:#64748b;--link:#185a9d;
       --accent-start:#43cea2;--accent-end:#185a9d;--chip:#e6f6f3;--ring:rgba(67,206,162,.2);
       --font-sans:'Helvetica Neue',Arial,sans-serif;--font-mono:'Courier New',monospace;
-      --header-h:72px;   /* set by JS, fallback here */
-      --hero-h:340px;    /* set by JS, fallback here */
+
+      /* Stable fixed sizes (no runtime resizing = no jank) */
+      --header-h:64px;
+      --hero-h:180px; /* small, always-on masthead */
     }
     @media (prefers-color-scheme:dark){
       :root{--bg:#0f172a;--panel:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--link:#43cea2;--accent-start:#185a9d;--accent-end:#43cea2;--chip:#1e3a46;--ring:rgba(24,90,157,.3)}
     }
 
-    /* Global layout + horizontal overflow guard */
+    /* Global */
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     html,body{overflow-x:hidden}
@@ -55,21 +57,21 @@
     a:hover{text-decoration:underline}
     .container{max-width:1200px;margin:0 auto;padding:0 1.2rem}
 
-    /* Header — fixed */
+    /* Header — fixed, consistent height */
     header.site{
       position:fixed;top:0;left:0;right:0;z-index:60;background:var(--bg);
-      border-bottom:1px solid var(--chip);backdrop-filter:blur(10px)
+      border-bottom:1px solid var(--chip);backdrop-filter:blur(10px);height:var(--header-h)
     }
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:.75rem 0}
-    .brand{font-size:1.25rem;font-weight:700;color:var(--text);white-space:nowrap}
-    nav.primary{display:flex;gap:.6rem}
-    nav.primary a{color:var(--muted);padding:.45rem .7rem;font-weight:500;border-radius:.5rem;transition:.2s}
+    .nav{height:100%;display:flex;align-items:center;justify-content:space-between}
+    .brand{font-size:1.1rem;font-weight:700;color:var(--text);white-space:nowrap}
+    nav.primary{display:flex;gap:.4rem}
+    nav.primary a{color:var(--muted);padding:.4rem .6rem;font-weight:500;border-radius:.5rem;transition:.2s}
     nav.primary a:hover,nav.primary a:focus{color:var(--link);background:var(--chip)}
     nav.primary a.active{color:var(--link);border-bottom:3px solid var(--link)}
-    .menu-btn{display:none;padding:.55rem .9rem;border:1px solid var(--chip);border-radius:.5rem;background:var(--panel);cursor:pointer}
+    .menu-btn{display:none;padding:.45rem .7rem;border:1px solid var(--chip);border-radius:.5rem;background:var(--panel);cursor:pointer}
     .menu-btn[aria-expanded="true"]{box-shadow:0 0 0 3px var(--ring)}
 
-    /* Collapse earlier to avoid crowding */
+    /* Collapse nav earlier to avoid wrapping (clean mobile) */
     @media (max-width:1100px){
       nav.primary{
         display:none;position:absolute;top:var(--header-h);left:1.2rem;right:1.2rem;background:var(--panel);
@@ -79,36 +81,36 @@
       .menu-btn{display:inline-flex}
     }
 
-    /* HERO — sticky under header + compact on scroll */
+    /* HERO — sticky under header, fixed height (no resizing on scroll) */
     .hero{
       position:sticky;top:var(--header-h);z-index:50;
-      background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:#fff;text-align:center;
-      padding:2.25rem 0 2rem; /* roomy default */
+      height:var(--hero-h);display:flex;align-items:center;
+      background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:#fff;
+      border-bottom:1px solid rgba(255,255,255,.25)
     }
-    .hero-content{max-width:800px;margin:0 auto;padding:0 1rem}
-    .hero .name{font-size:clamp(2.1rem,6vw,3.4rem);margin:0 .5rem .35rem;white-space:nowrap}
-    .hero .headline{font-size:clamp(1.1rem,3.2vw,1.6rem);font-weight:600;margin:0 .5rem}
-    .lead{color:#e6f6f3;max-width:70ch;margin:1rem auto .3rem}
-    .cta{display:inline-flex;align-items:center;gap:.6rem;padding:.65rem 1.2rem;border:2px solid #fff;border-radius:.75rem;font-weight:600;color:#fff;background:rgba(255,255,255,.1);transition:.3s}
-    .cta:hover{background:rgba(255,255,255,.2);box-shadow:0 0 0 4px var(--ring);transform:translateY(-2px)}
-    .cta-row{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;margin-top:1.1rem}
-    .avatar{width:170px;height:170px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 6px 12px rgba(0,0,0,.2);margin:0.5rem auto}
-    @media (min-width:900px){.avatar{width:220px;height:220px}}
+    .hero-content{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:1rem;padding:0 1.2rem;width:100%}
+    .avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.15);flex:0 0 auto}
+    .hero-text{min-width:0;display:flex;flex-direction:column;gap:.25rem}
+    .name{
+      margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      font-size:clamp(1.2rem,3.6vw,1.8rem);line-height:1.2
+    }
+    .headline{margin:0;color:#e6f6f3;font-weight:600;font-size:clamp(.9rem,2.6vw,1.1rem)}
+    .hero-cta{margin-left:auto;display:flex;gap:.5rem;flex-wrap:wrap}
+    .cta{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem .9rem;border:2px solid #fff;border-radius:.7rem;font-weight:700;color:#fff;background:rgba(255,255,255,.1);transition:.2s;white-space:nowrap}
+    .cta:hover{background:rgba(255,255,255,.2);box-shadow:0 0 0 4px var(--ring)}
+    @media (max-width:640px){
+      .hero-cta{display:none} /* keep hero compact on phones */
+      .avatar{width:60px;height:60px}
+    }
 
-    /* Compact hero when scrolling */
-    .hero.compact{padding:.6rem 0}
-    .hero.compact .avatar{width:44px;height:44px;border-width:2px;margin:.2rem auto}
-    .hero.compact .name{font-size:1.15rem;margin:.1rem 0}
-    .hero.compact .headline{display:none}
-    .hero.compact .lead{display:none}
-    .hero.compact .cta-row{display:none}
-
-    /* Sections — offset by header + hero heights */
-    .section{padding:2rem 0;scroll-margin-top:calc(var(--header-h) + var(--hero-h) + 8px)}
+    /* Sections — offset so anchors land below sticky area */
+    .section{padding:2rem 0;scroll-margin-top:calc(var(--header-h) + var(--hero-h) + 12px)}
     .section h2{font-size:clamp(1.4rem,3.6vw,2rem);margin:0 0 1.2rem;color:var(--link);position:relative}
     .section h2::after{content:"";width:60px;height:4px;background:linear-gradient(to right,var(--accent-start),var(--accent-end));position:absolute;bottom:-.5rem;left:0}
-    .card{background:var(--panel);border:1px solid var(--chip);border-radius:1rem;padding:1.4rem;box-shadow:0 4px 8px rgba(0,0,0,.05);transition:.3s;content-visibility:auto;contain-intrinsic-size:600px}
-    .card:hover{transform:translateY(-6px);box-shadow:0 6px 16px rgba(0,0,0,.1)}
+
+    .card{background:var(--panel);border:1px solid var(--chip);border-radius:1rem;padding:1.4rem;box-shadow:0 4px 8px rgba(0,0,0,.05);transition:.3s}
+    .card:hover{transform:translateY(-4px);box-shadow:0 8px 18px rgba(0,0,0,.1)}
     .two-col{display:grid;gap:1.4rem}
     @media (min-width:900px){.two-col{grid-template-columns:repeat(2,1fr)}}
     .three-col{display:grid;gap:1.4rem}
@@ -116,8 +118,7 @@
     .meta{color:var(--muted);font-size:1rem;margin:.4rem 0 .6rem}
     .chips{display:flex;flex-wrap:wrap;gap:.6rem}
     .chips.column{flex-direction:column;align-items:flex-start}
-    .chip{background:var(--chip);border:2px solid var(--link);padding:.32rem .85rem;border-radius:1.5rem;font-size:1rem;color:var(--link);transition:background .2s;display:inline-block}
-    .chip:hover{background:var(--accent-start)}
+    .chip{background:var(--chip);border:2px solid var(--link);padding:.32rem .85rem;border-radius:1.5rem;font-size:1rem;color:var(--link)}
     .list{list-style:disc;padding-left:1.4rem;margin:.4rem 0}
     .list li{margin-bottom:.55rem;overflow-wrap:anywhere}
     .kicker{text-transform:uppercase;font-size:.9rem;color:var(--muted);letter-spacing:.1em;margin-bottom:.6rem}
@@ -131,10 +132,9 @@
 
     /* CONTACT — modern cards */
     .contact-wrap{
-      position:relative;
       background:
-        radial-gradient(1200px 400px at 10% 0%, rgba(67,206,162,.15), transparent 40%),
-        radial-gradient(800px 300px at 90% 20%, rgba(24,90,157,.15), transparent 50%);
+        radial-gradient(900px 350px at 10% 0%, rgba(67,206,162,.15), transparent 45%),
+        radial-gradient(700px 260px at 90% 20%, rgba(24,90,157,.15), transparent 55%);
       border-radius:1.25rem;padding:1.6rem;border:1px solid var(--chip)
     }
     .contact-grid{display:grid;gap:1rem;grid-template-columns:1fr}
@@ -145,31 +145,28 @@
       box-shadow:0 6px 18px rgba(0,0,0,.06);transition:transform .2s, box-shadow .2s
     }
     .contact-card:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.1)}
-    .contact-icon{flex:0 0 44px;width:44px;height:44px;border-radius:.75rem;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:#fff;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)}
+    .contact-icon{flex:0 0 44px;width:44px;height:44px;border-radius:.75rem;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:#fff}
     .contact-title{margin:0;font-weight:700}
     .contact-link{display:inline-block;margin-top:.25rem;word-break:break-word}
     .contact-actions{margin-top:.6rem;display:flex;gap:.5rem;flex-wrap:wrap}
     .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .8rem;border-radius:.6rem;border:1px solid var(--chip);background:var(--bg);color:var(--link);font-weight:600;cursor:pointer;transition:background .2s, transform .1s}
     .btn:hover{background:var(--chip)}
-    .btn:active{transform:translateY(1px)}
     .btn[disabled]{opacity:.6;cursor:default}
 
-    /* Accessibility & Animations */
+    /* A11y & print */
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0)}
     a:focus-visible,button:focus-visible,.cta:focus-visible,.btn:focus-visible{outline:3px solid var(--link);outline-offset:4px;border-radius:.75rem}
-    .reveal{opacity:0;transform:translateY(20px);transition:all .5s}
+    .reveal{opacity:0;transform:translateY(16px);transition:all .45s}
     .reveal.visible{opacity:1;transform:none}
     @media (prefers-reduced-motion:reduce){
       .reveal,.reveal.visible{opacity:1;transform:none;transition:none}
     }
-
-    /* Footer & Print */
     footer{padding:2rem 0;text-align:center;font-size:1rem;color:var(--muted);border-top:2px solid var(--chip)}
     .mono{font-family:var(--font-mono)}
     @media print{
       *{background:transparent !important;box-shadow:none !important}
       body{color:#000}
-      header.site,.pub-filter,.cta-row,nav.primary,.hero.compact .avatar,.hero .avatar{display:none !important}
+      header.site,nav.primary,.hero,.cta{display:none !important}
       .container{max-width:none;padding:0 15mm}
     }
   </style>
@@ -229,17 +226,16 @@
     </div>
   </header>
 
-  <!-- STICKY HERO -->
+  <!-- STICKY, SMALL HERO (always visible) -->
   <section class="hero" id="hero">
     <div class="hero-content">
-      <img src="assets/profile.jpg" alt="Portrait of Rafia Hasnat Jinia" class="avatar" width="250" height="250" decoding="async" fetchpriority="high" sizes="(min-width: 900px) 250px, 200px">
-      <h1 class="name">Rafia Hasnat Jinia</h1>
-      <h2 class="headline">Biomedical Engineer &amp; Ph.D. Aspirant</h2>
-      <p class="lead">Developing innovative biomaterials to combat antibacterial resistance and enhance wound healing, with a focus on translating research into clinical solutions.</p>
-      <div class="cta-row">
+      <img src="assets/profile.jpg" alt="Portrait of Rafia Hasnat Jinia" class="avatar" width="120" height="120" decoding="async" fetchpriority="high">
+      <div class="hero-text">
+        <h1 class="name">Rafia Hasnat Jinia</h1>
+        <p class="headline">Biomedical Engineer &amp; Ph.D. Aspirant</p>
+      </div>
+      <div class="hero-cta">
         <a class="cta" href="assets/Rafia_Hasnat_Jinia_CV.pdf" download>Download CV</a>
-        <a class="cta" href="https://www.linkedin.com/in/rafia-hasnat-jinia" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="cta" href="https://www.researchgate.net/profile/Rafia-Hasnat-Jinia" target="_blank" rel="noopener">ResearchGate</a>
         <a class="cta" href="mailto:rafiahasnatjinia@gmail.com">Email</a>
       </div>
     </div>
@@ -600,131 +596,77 @@
   </main>
 
   <script>
-    // Elements
-    const header = document.getElementById('siteHeader');
-    const hero = document.getElementById('hero');
-
-    // Compute and expose header/hero heights as CSS vars
-    function setHeights(){
-      document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
-      document.documentElement.style.setProperty('--hero-h', hero.offsetHeight + 'px');
-    }
-    setHeights();
-    window.addEventListener('resize', setHeights);
-
-    // Auto-compact hero on scroll for better mobile/short viewports
-    let compact = false;
-    function maybeCompactHero(){
-      const shouldCompact = window.scrollY > 60;
-      if (shouldCompact !== compact){
-        compact = shouldCompact;
-        hero.classList.toggle('compact', compact);
-        setHeights();      // hero height changed
-        onScrollSpy();     // update highlight anchor
-      }
-    }
-    document.addEventListener('scroll', () => { maybeCompactHero(); }, { passive: true });
-
-    // Year (auto-updating)
+    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Mobile menu: open/close + focus restore + Esc-to-close
+    // Mobile menu
     const menuBtn = document.getElementById('menuBtn');
     const nav = document.getElementById('primaryNav');
     let lastFocus = null;
+    function openNav(){ lastFocus = document.activeElement; nav.classList.add('open'); menuBtn.setAttribute('aria-expanded','true'); nav.querySelector('a')?.focus(); }
+    function closeNav(){ nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); lastFocus?.focus(); }
+    menuBtn.addEventListener('click', ()=> menuBtn.getAttribute('aria-expanded')==='true' ? closeNav() : openNav());
+    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ if (window.innerWidth<=1100) closeNav(); }));
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeNav(); });
 
-    function openNav(){
-      lastFocus = document.activeElement;
-      nav.classList.add('open');
-      menuBtn.setAttribute('aria-expanded','true');
-      const firstLink = nav.querySelector('a'); if (firstLink) firstLink.focus();
-    }
-    function closeNav(){
-      nav.classList.remove('open');
-      menuBtn.setAttribute('aria-expanded','false');
-      if (lastFocus) lastFocus.focus();
-    }
-
-    menuBtn.addEventListener('click', () => {
-      const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
-      isOpen ? closeNav() : openNav();
-    });
-    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      if (window.innerWidth <= 1100) closeNav();
-    }));
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeNav(); });
-
-    // Publication filter: accessible state + live updates
-    const pubButtons = document.querySelectorAll('.pub-filter button');
-    const pubs = document.querySelectorAll('#pub-list .pub');
-    const pubStatus = document.getElementById('pub-status');
-
-    pubButtons.forEach(btn => btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter;
-      pubs.forEach(pub => pub.style.display = (filter === 'all' || pub.dataset.status === filter) ? '' : 'none');
-      pubButtons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
-      const visible = [...pubs].filter(p => p.style.display !== 'none').length;
-      pubStatus.textContent = `${visible} item${visible !== 1 ? 's' : ''} shown (${filter})`;
+    // Publication filter
+    const pubButtons=document.querySelectorAll('.pub-filter button');
+    const pubs=document.querySelectorAll('#pub-list .pub');
+    const pubStatus=document.getElementById('pub-status');
+    pubButtons.forEach(btn=>btn.addEventListener('click',()=>{
+      const f=btn.dataset.filter; pubs.forEach(p=>p.style.display=(f==='all'||p.dataset.status===f)?'':'none');
+      pubButtons.forEach(b=>b.setAttribute('aria-pressed', String(b===btn)));
+      const visible=[...pubs].filter(p=>p.style.display!=='none').length;
+      pubStatus.textContent=`${visible} item${visible!==1?'s':''} shown (${f})`;
     }));
 
-    // Reveal on scroll (respect reduced motion)
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { if (entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
-      }, { threshold: 0.2 });
-      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    // Reveal on scroll
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
+      const ob=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ob.unobserve(e.target);}}),{threshold:0.2});
+      document.querySelectorAll('.reveal').forEach(el=>ob.observe(el));
     }
 
-    // Precise scroll-spy using an "anchor line" just below sticky hero
-    const sectionEls = Array.from(document.querySelectorAll('main .section'));
+    // Precise scroll-spy: use an anchor line just below sticky area, sample with elementFromPoint
+    const header = document.getElementById('siteHeader');
+    const hero   = document.getElementById('hero');
     const navLinks = Array.from(document.querySelectorAll('nav.primary a'));
 
-    function setActiveLink(id){
-      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
+    function setActive(id){
+      navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href')===`#${id}`));
     }
-
-    function onScrollSpy(){
-      const headerH = header.offsetHeight || 0;
-      const heroH = hero.offsetHeight || 0;
-      const anchorY = window.scrollY + headerH + heroH + 10; // 10px below sticky area
-      let currentId = null;
-
-      for (const sec of sectionEls){
-        const top = sec.offsetTop;
-        const bottom = top + sec.offsetHeight;
-        if (anchorY >= top && anchorY < bottom){ currentId = sec.id; break; }
+    let ticking=false;
+    function spy(){
+      ticking=false;
+      const anchorY = header.offsetHeight + hero.offsetHeight + 8; // below sticky area
+      const anchorX = Math.max(0, Math.min(window.innerWidth-1, window.innerWidth/2));
+      const el = document.elementFromPoint(anchorX, anchorY);
+      const sec = el && el.closest ? el.closest('.section') : null;
+      if (sec && sec.id) setActive(sec.id);
+      else if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2){
+        // at bottom -> last section
+        const sections = document.querySelectorAll('main .section');
+        const last = sections[sections.length-1]; if(last) setActive(last.id);
       }
-      // If at bottom of page, ensure last section stays highlighted
-      if (!currentId && window.innerHeight + window.scrollY >= document.body.offsetHeight - 4){
-        currentId = sectionEls[sectionEls.length - 1]?.id;
-      }
-      if (currentId) setActiveLink(currentId);
     }
+    function onScroll(){
+      if(!ticking){ window.requestAnimationFrame(spy); ticking=true; }
+    }
+    document.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', onScroll);
+    window.addEventListener('load', onScroll);
 
-    onScrollSpy();
-    document.addEventListener('scroll', onScrollSpy, { passive: true });
-    window.addEventListener('resize', onScrollSpy);
-
-    // Copy-to-clipboard for Contact buttons
+    // Copy-to-clipboard (contact)
     function copyText(text){
-      if (navigator.clipboard && window.isSecureContext){ return navigator.clipboard.writeText(text); }
-      const ta = document.createElement('textarea');
-      ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px'; document.body.appendChild(ta);
-      ta.focus(); ta.select();
-      try{ document.execCommand('copy'); } finally { document.body.removeChild(ta); }
+      if(navigator.clipboard && window.isSecureContext){ return navigator.clipboard.writeText(text); }
+      const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.left='-9999px'; document.body.appendChild(ta);
+      ta.select(); try{ document.execCommand('copy'); } finally{ document.body.removeChild(ta); }
       return Promise.resolve();
     }
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const original = btn.textContent;
-        try{
-          await copyText(btn.dataset.copy);
-          btn.textContent = 'Copied!'; btn.disabled = true;
-          setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1400);
-        }catch{
-          btn.textContent = 'Failed';
-          setTimeout(() => { btn.textContent = original; }, 1400);
-        }
+    document.querySelectorAll('.copy-btn').forEach(btn=>{
+      btn.addEventListener('click', async ()=>{
+        const original=btn.textContent;
+        try{ await copyText(btn.dataset.copy); btn.textContent='Copied!'; btn.disabled=true; setTimeout(()=>{btn.textContent=original; btn.disabled=false;}, 1400); }
+        catch{ btn.textContent='Failed'; setTimeout(()=>{btn.textContent=original;}, 1400); }
       });
     });
   </script>
