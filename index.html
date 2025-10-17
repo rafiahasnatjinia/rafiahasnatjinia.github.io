@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-device-width, initial-scale=1">
   <title>Rafia Hasnat Jinia — Biomedical Innovator</title>
   <meta name="description" content="Rafia Hasnat Jinia — Biomedical Engineer specializing in biomaterials and regenerative medicine. Aspiring Ph.D. student.">
   <meta name="color-scheme" content="light dark">
@@ -73,14 +73,14 @@
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
 
     /* Header */
-    header.site { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 1px solid var(--chip); backdrop-filter: blur(10px); }
+    header.site { position: fixed; top: 0; width: 100%; z-index: 50; background: var(--bg); border-bottom: 1px solid var(--chip); backdrop-filter: blur(10px); }
     .nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; }
     .brand { font-size: 1.4rem; font-weight: 700; color: var(--text); white-space: nowrap; }
 
     nav.primary { display: flex; gap: 0.8rem; }
     nav.primary a { color: var(--muted); padding: 0.5rem 0.8rem; font-weight: 500; border-radius: 0.5rem; transition: all 0.2s ease; }
     nav.primary a:hover, nav.primary a:focus { color: var(--link); background: var(--chip); }
-    nav.primary a.active { color: var(--link); border-bottom: 3px solid var(--link); }
+    nav.primary a.active { color: var(--link); background: var(--chip); font-weight: 600; border-bottom: 3px solid var(--link); }
 
     .menu-btn { display: none; padding: 0.6rem 1rem; border: 1px solid var(--chip); border-radius: 0.5rem; background: var(--panel); cursor: pointer; }
     .menu-btn[aria-expanded="true"] { box-shadow: 0 0 0 3px var(--ring); }
@@ -102,7 +102,7 @@
     }
 
     /* Hero */
-    .hero { padding: 4rem 0; background: linear-gradient(135deg, var(--accent-start), var(--accent-end)); text-align: center; color: #fff; }
+    .hero { padding: 4rem 0; background: linear-gradient(135deg, var(--accent-start), var(--accent-end)); text-align: center; color: #fff; margin-top: 70px; }
     .hero-content { max-width: 800px; margin: 0 auto; }
     .hero .name {
       font-size: clamp(2.2rem, 6vw, 3.5rem);
@@ -195,6 +195,36 @@
     .btn:active { transform: translateY(1px); }
     .btn[disabled] { opacity: .6; cursor: default; }
 
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--accent-start);
+      color: #fff;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .back-to-top:hover {
+      transform: translateY(-4px);
+    }
+    .back-to-top:focus-visible {
+      outline: 3px solid var(--link);
+      outline-offset: 4px;
+    }
+
     /* Footer */
     footer { padding: 3rem 0; text-align: center; font-size: 1rem; color: var(--muted); border-top: 2px solid var(--chip); }
     .mono { font-family: var(--font-mono); }
@@ -210,7 +240,7 @@
     @media print {
       * { background: transparent !important; box-shadow: none !important; }
       body { color: #000; }
-      header.site, .pub-filter, .cta-row, nav.primary { display: none !important; }
+      header.site, .pub-filter, .cta-row, nav.primary, .back-to-top { display: none !important; }
       a[href]::after { content: " (" attr(href) ")"; font-size: 0.9em; }
       .container { max-width: none; padding: 0 15mm; }
     }
@@ -291,7 +321,7 @@
       <h2>About Me</h2>
       <div class="two-col">
         <div class="card reveal">
-          <p>I hold an M.Sc. in Biomedical Engineering from BUET, where my thesis explored tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds. This work involved developing dual-functional biomaterials that promote wound healing while managing infections through in vitro, in vivo, and in silico evaluations. As a Senior Product Development Engineer at <a href="https://thebioltd.com/" target="_blank" rel="noopener">BioEnclave</a>—a company dedicated to regenerative healthcare solutions—I optimize advanced wound dressings like CuraGel™ and AmnioVive™, coordinating clinical trials and collaborating on innovative medical devices. With hands-on experience in electrospinning, nanoparticle synthesis, and molecular simulations, I'm eager to pursue a Ph.D. to further advance drug delivery and tissue engineering in resource-constrained settings.</p>
+          <p>I hold an M.Sc. in Biomedical Engineering from BUET, where my thesis explored tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds. This work involved developing dual-functional biomaterials that promote wound healing while managing infections through in vitro, in vivo, and in silico evaluations. As a Senior Product Development Engineer at BioEnclave—a company dedicated to regenerative healthcare solutions—I optimize advanced wound dressings like CuraGel™ and AmnioVive™, coordinating clinical trials and collaborating on innovative medical devices. With hands-on experience in electrospinning, nanoparticle synthesis, and molecular simulations, I'm eager to pursue a Ph.D. to further advance drug delivery and tissue engineering in resource-constrained settings.</p>
         </div>
         <div class="card reveal">
           <h3>Education</h3>
@@ -386,7 +416,7 @@
       <div class="two-col">
         <div class="card reveal">
           <h3>Senior Product Development Engineer</h3>
-          <div class="meta"><a href="https://thebioltd.com/" target="_blank" rel="noopener">BioEnclave</a>, Bangladesh (Jul 2024 – Present)</div>
+          <div class="meta">BioEnclave, Bangladesh (Jul 2024 – Present)</div>
           <ul class="list">
             <li>Optimized and prototyped biological material-based advanced wound dressings (PL-based CuraGel™ and decellularized human amniotic membrane-based AmnioVive™) for regenerative medicine applications aimed at treating non-healing diabetic wounds.</li>
             <li>Coordinated and supervised clinical trials and pilot studies, managing data, collaborating with medical professionals, and ensuring ethical and regulatory compliance in Bangladesh.</li>
@@ -395,7 +425,7 @@
         </div>
         <div class="card reveal">
           <h3>Product Development Engineer</h3>
-          <div class="meta"><a href="https://thebioltd.com/" target="_blank" rel="noopener">BioEnclave</a>, Bangladesh (May 2023 – Jun 2024)</div>
+          <div class="meta">BioEnclave, Bangladesh (May 2023 – Jun 2024)</div>
           <ul class="list">
             <li>Developed and prototyped advanced medical-grade sponges (HemoSponge™), dental hydroxyapatite powder (BioApta™), hemostat powder (PowClot™, BioClotX™) achieving superior performance and regulatory standards.</li>
             <li>Conducted market analysis to guide data-driven product development and competitiveness.</li>
@@ -644,6 +674,13 @@
     </footer>
   </main>
 
+  <!-- Back to Top Button -->
+  <a href="#top" class="back-to-top" aria-label="Back to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </a>
+
   <script>
     // Year (auto-updating)
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -756,6 +793,16 @@
           setTimeout(() => { btn.textContent = original; }, 1400);
         }
       });
+    });
+
+    // Back to Top Button Visibility
+    const backToTop = document.querySelector('.back-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
     });
   </script>
 </body>
