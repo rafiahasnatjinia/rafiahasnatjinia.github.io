@@ -66,14 +66,19 @@
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     html, body { overflow-x: hidden; }
-    body { margin: 0; font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; }
+    body { margin: 0; font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; padding-top: var(--header-h, 72px); }
     img, svg, video { max-width: 100%; height: auto; display: block; }
     a { color: var(--link); text-decoration: none; }
     a:hover { text-decoration: underline; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
 
-    /* Header */
-    header.site { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 1px solid var(--chip); backdrop-filter: blur(10px); }
+    /* Header — now fixed */
+    header.site {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      background: var(--bg);
+      border-bottom: 1px solid var(--chip);
+      backdrop-filter: blur(10px);
+    }
     .nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; }
     .brand { font-size: 1.4rem; font-weight: 700; color: var(--text); white-space: nowrap; }
 
@@ -85,12 +90,12 @@
     .menu-btn { display: none; padding: 0.6rem 1rem; border: 1px solid var(--chip); border-radius: 0.5rem; background: var(--panel); cursor: pointer; }
     .menu-btn[aria-expanded="true"] { box-shadow: 0 0 0 3px var(--ring); }
 
-    /* Collapse to hamburger a bit earlier to avoid overflow */
+    /* Collapse to hamburger earlier to avoid overflow */
     @media (max-width: 1100px) {
       nav.primary {
         display: none;
         position: absolute;
-        top: 70px; left: 1.5rem; right: 1.5rem;
+        top: calc(var(--header-h, 72px)); left: 1.5rem; right: 1.5rem;
         background: var(--panel);
         border: 1px solid var(--chip);
         border-radius: 0.5rem;
@@ -119,7 +124,7 @@
     @media (min-width: 900px) { .avatar { width: 250px; height: 250px; } }
 
     /* Sections */
-    .section { padding: 3rem 0; scroll-margin-top: 7rem; }
+    .section { padding: 3rem 0; scroll-margin-top: calc(var(--header-h, 72px) + 12px); }
     .section h2 { font-size: clamp(1.6rem, 4vw, 2rem); margin: 0 0 1.5rem; color: var(--link); position: relative; }
     .section h2::after { content: ""; width: 60px; height: 4px; background: linear-gradient(to right, var(--accent-start), var(--accent-end)); position: absolute; bottom: -0.5rem; left: 0; }
     .card { background: var(--panel); border: 1px solid var(--chip); border-radius: 1rem; padding: 1.8rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); transition: all 0.3s ease; content-visibility: auto; contain-intrinsic-size: 600px; }
@@ -204,7 +209,7 @@
     a:focus-visible, button:focus-visible, .cta:focus-visible, .btn:focus-visible { outline: 3px solid var(--link); outline-offset: 4px; border-radius: 0.75rem; }
     .reveal { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
     .reveal.visible { opacity: 1; transform: none; }
-    @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { opacity: 1; transform: none; transition: none; } }
+    @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { opacity: 1; transform: none; transition: none; }
 
     /* Print Styles */
     @media print {
@@ -235,7 +240,7 @@
   }
   </script>
 
-  <!-- Optional: structured data for the article (keep if accurate) -->
+  <!-- Optional: structured data for the article -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -251,7 +256,7 @@
 </head>
 <body>
   <a class="sr-only" href="#main">Skip to content</a>
-  <header class="site">
+  <header class="site" id="siteHeader">
     <div class="container nav">
       <a class="brand" href="/">Rafia Hasnat Jinia</a>
       <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation">☰</button>
@@ -291,7 +296,7 @@
       <h2>About Me</h2>
       <div class="two-col">
         <div class="card reveal">
-          <p>I hold an M.Sc. in Biomedical Engineering from BUET, where my thesis explored tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds. This work involved developing dual-functional biomaterials that promote wound healing while managing infections through in vitro, in vivo, and in silico evaluations. As a Senior Product Development Engineer at <a href="https://thebioltd.com/" target="_blank" rel="noopener">BioEnclave</a>—a company dedicated to regenerative healthcare solutions—I optimize advanced wound dressings like CuraGel™ and AmnioVive™, coordinating clinical trials and collaborating on innovative medical devices. With hands-on experience in electrospinning, nanoparticle synthesis, and molecular simulations, I'm eager to pursue a Ph.D. to further advance drug delivery and tissue engineering in resource-constrained settings.</p>
+          <p>I hold an M.Sc. in Biomedical Engineering from BUET, where my thesis explored tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds. This work involved developing dual-functional biomaterials that promote wound healing while managing infections through in vitro, in vivo, and in silico evaluations. As a Senior Product Development Engineer at BioEnclave—a company dedicated to regenerative healthcare solutions—I optimize advanced wound dressings like CuraGel™ and AmnioVive™, coordinating clinical trials and collaborating on innovative medical devices. With hands-on experience in electrospinning, nanoparticle synthesis, and molecular simulations, I'm eager to pursue a Ph.D. to further advance drug delivery and tissue engineering in resource-constrained settings.</p>
         </div>
         <div class="card reveal">
           <h3>Education</h3>
@@ -574,7 +579,6 @@
           <!-- Email -->
           <article class="contact-card">
             <div class="contact-icon" aria-hidden="true">
-              <!-- Envelope icon -->
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div class="contact-body">
@@ -590,7 +594,6 @@
           <!-- LinkedIn -->
           <article class="contact-card">
             <div class="contact-icon" aria-hidden="true">
-              <!-- LinkedIn icon -->
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.5 8.5h4V23h-4V8.5Zm7.5 0h3.8v2h.1c.53-1 1.83-2.1 3.77-2.1 4.03 0 4.78 2.65 4.78 6.1V23h-3.98v-7.3c0-1.74-.03-3.98-2.43-3.98-2.43 0-2.8 1.9-2.8 3.86V23H8V8.5Z" fill="currentColor"/></svg>
             </div>
             <div class="contact-body">
@@ -606,7 +609,6 @@
           <!-- ResearchGate -->
           <article class="contact-card">
             <div class="contact-icon" aria-hidden="true">
-              <!-- RG icon (book-ish) -->
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 3h12a3 3 0 0 1 3 3v14l-4-3-4 3-4-3-4 3V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
             </div>
             <div class="contact-body">
@@ -622,7 +624,6 @@
           <!-- Location -->
           <article class="contact-card">
             <div class="contact-icon" aria-hidden="true">
-              <!-- Map pin -->
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.33 7-11a7 7 0 1 0-14 0c0 5.67 7 11 7 11Z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/></svg>
             </div>
             <div class="contact-body">
@@ -645,6 +646,14 @@
   </main>
 
   <script>
+    // Measure header and expose CSS var for layout offset
+    const header = document.getElementById('siteHeader');
+    function setHeaderHeight() {
+      document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+    }
+    setHeaderHeight();
+    window.addEventListener('resize', setHeaderHeight);
+
     // Year (auto-updating)
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -709,23 +718,38 @@
       document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     }
 
-    // Scroll-spy: highlight current section in nav
-    const sections = [...document.querySelectorAll('.hero, main .section')];
-    const navLinks = [...document.querySelectorAll('nav.primary a')];
-    const linkFor = (id) => navLinks.find(a => a.getAttribute('href') === `#${id}`);
-
-    if ('IntersectionObserver' in window) {
-      const spy = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            navLinks.forEach(a => a.classList.remove('active'));
-            const link = linkFor(entry.target.id);
-            if (link) link.classList.add('active');
-          }
-        });
-      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-      sections.forEach(sec => sec.id && spy.observe(sec));
+    // Robust scroll-spy: highlight current section based on scroll position + header height
+    const sectionEls = Array.from(document.querySelectorAll('main .section'));
+    const navLinks = Array.from(document.querySelectorAll('nav.primary a'));
+    function setActiveLink(id) {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
     }
+
+    function onScrollSpy() {
+      const headerH = header.offsetHeight || 0;
+      const y = window.scrollY + headerH + 10; // anchor line just below header
+      let currentId = null;
+
+      for (const sec of sectionEls) {
+        const top = sec.offsetTop;
+        const bottom = top + sec.offsetHeight;
+        if (y >= top && y < bottom) {
+          currentId = sec.id;
+          break;
+        }
+      }
+
+      // Edge case: at very top before first section
+      if (!currentId && window.scrollY < sectionEls[0].offsetTop - 10) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        return;
+      }
+      if (currentId) setActiveLink(currentId);
+    }
+
+    onScrollSpy();
+    document.addEventListener('scroll', onScrollSpy, { passive: true });
+    window.addEventListener('resize', onScrollSpy);
 
     // Copy-to-clipboard for Contact buttons
     function copyText(text) {
