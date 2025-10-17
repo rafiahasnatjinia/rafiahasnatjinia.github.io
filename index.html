@@ -34,140 +34,185 @@
   <link rel="preload" as="image" href="assets/profile.jpg">
 
   <style>
-    :root{
-      --bg:#fff;--panel:#f8fafc;--text:#1e293b;--muted:#64748b;--link:#185a9d;
-      --accent-start:#43cea2;--accent-end:#185a9d;--chip:#e6f6f3;--ring:rgba(67,206,162,.2);
-      --font-sans:'Helvetica Neue',Arial,sans-serif;--font-mono:'Courier New',monospace;
-
-      /* Stable fixed sizes (no runtime resizing = no jank) */
-      --header-h:64px;
-      --hero-h:180px; /* small, always-on masthead */
+    :root {
+      --bg: #ffffff;
+      --panel: #f8fafc;
+      --text: #1e293b;
+      --muted: #64748b;
+      --link: #185a9d;
+      --accent-start: #43cea2;
+      --accent-end: #185a9d;
+      --chip: #e6f6f3;
+      --ring: rgba(67, 206, 162, 0.2);
+      --success: #065f46;
+      --font-sans: 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: 'Courier New', monospace;
     }
-    @media (prefers-color-scheme:dark){
-      :root{--bg:#0f172a;--panel:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--link:#43cea2;--accent-start:#185a9d;--accent-end:#43cea2;--chip:#1e3a46;--ring:rgba(24,90,157,.3)}
-    }
-
-    /* Global */
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    html,body{overflow-x:hidden}
-    body{margin:0;font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.6;padding-top:var(--header-h)}
-    img,svg,video{max-width:100%;height:auto;display:block}
-    a{color:var(--link);text-decoration:none}
-    a:hover{text-decoration:underline}
-    .container{max-width:1200px;margin:0 auto;padding:0 1.2rem}
-
-    /* Header — fixed, consistent height */
-    header.site{
-      position:fixed;top:0;left:0;right:0;z-index:60;background:var(--bg);
-      border-bottom:1px solid var(--chip);backdrop-filter:blur(10px);height:var(--header-h)
-    }
-    .nav{height:100%;display:flex;align-items:center;justify-content:space-between}
-    .brand{font-size:1.1rem;font-weight:700;color:var(--text);white-space:nowrap}
-    nav.primary{display:flex;gap:.4rem}
-    nav.primary a{color:var(--muted);padding:.4rem .6rem;font-weight:500;border-radius:.5rem;transition:.2s}
-    nav.primary a:hover,nav.primary a:focus{color:var(--link);background:var(--chip)}
-    nav.primary a.active{color:var(--link);border-bottom:3px solid var(--link)}
-    .menu-btn{display:none;padding:.45rem .7rem;border:1px solid var(--chip);border-radius:.5rem;background:var(--panel);cursor:pointer}
-    .menu-btn[aria-expanded="true"]{box-shadow:0 0 0 3px var(--ring)}
-
-    /* Collapse nav earlier to avoid wrapping (clean mobile) */
-    @media (max-width:1100px){
-      nav.primary{
-        display:none;position:absolute;top:var(--header-h);left:1.2rem;right:1.2rem;background:var(--panel);
-        border:1px solid var(--chip);border-radius:.6rem;flex-direction:column;padding:1rem;gap:.6rem
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --panel: #1e293b;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --link: #43cea2;
+        --accent-start: #185a9d;
+        --accent-end: #43cea2;
+        --chip: #1e3a46;
+        --ring: rgba(24, 90, 157, 0.3);
       }
-      nav.primary.open{display:flex}
-      .menu-btn{display:inline-flex}
     }
 
-    /* HERO — sticky under header, fixed height (no resizing on scroll) */
-    .hero{
-      position:sticky;top:var(--header-h);z-index:50;
-      height:var(--hero-h);display:flex;align-items:center;
-      background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:#fff;
-      border-bottom:1px solid rgba(255,255,255,.25)
-    }
-    .hero-content{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:1rem;padding:0 1.2rem;width:100%}
-    .avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.15);flex:0 0 auto}
-    .hero-text{min-width:0;display:flex;flex-direction:column;gap:.25rem}
-    .name{
-      margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-      font-size:clamp(1.2rem,3.6vw,1.8rem);line-height:1.2
-    }
-    .headline{margin:0;color:#e6f6f3;font-weight:600;font-size:clamp(.9rem,2.6vw,1.1rem)}
-    .hero-cta{margin-left:auto;display:flex;gap:.5rem;flex-wrap:wrap}
-    .cta{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem .9rem;border:2px solid #fff;border-radius:.7rem;font-weight:700;color:#fff;background:rgba(255,255,255,.1);transition:.2s;white-space:nowrap}
-    .cta:hover{background:rgba(255,255,255,.2);box-shadow:0 0 0 4px var(--ring)}
-    @media (max-width:640px){
-      .hero-cta{display:none} /* keep hero compact on phones */
-      .avatar{width:60px;height:60px}
+    /* Global layout + horizontal overflow guard */
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body { overflow-x: hidden; }
+    body { margin: 0; font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; }
+    img, svg, video { max-width: 100%; height: auto; display: block; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Header */
+    header.site { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 1px solid var(--chip); backdrop-filter: blur(10px); }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; }
+    .brand { font-size: 1.4rem; font-weight: 700; color: var(--text); white-space: nowrap; }
+
+    nav.primary { display: flex; gap: 0.8rem; }
+    nav.primary a { color: var(--muted); padding: 0.5rem 0.8rem; font-weight: 500; border-radius: 0.5rem; transition: all 0.2s ease; }
+    nav.primary a:hover, nav.primary a:focus { color: var(--link); background: var(--chip); }
+    nav.primary a.active { color: var(--link); border-bottom: 3px solid var(--link); }
+
+    .menu-btn { display: none; padding: 0.6rem 1rem; border: 1px solid var(--chip); border-radius: 0.5rem; background: var(--panel); cursor: pointer; }
+    .menu-btn[aria-expanded="true"] { box-shadow: 0 0 0 3px var(--ring); }
+
+    /* Collapse to hamburger a bit earlier to avoid overflow */
+    @media (max-width: 1100px) {
+      nav.primary {
+        display: none;
+        position: absolute;
+        top: 70px; left: 1.5rem; right: 1.5rem;
+        background: var(--panel);
+        border: 1px solid var(--chip);
+        border-radius: 0.5rem;
+        flex-direction: column;
+        padding: 1rem; gap: 0.7rem;
+      }
+      nav.primary.open { display: flex; }
+      .menu-btn { display: inline-flex; }
     }
 
-    /* Sections — offset so anchors land below sticky area */
-    .section{padding:2rem 0;scroll-margin-top:calc(var(--header-h) + var(--hero-h) + 12px)}
-    .section h2{font-size:clamp(1.4rem,3.6vw,2rem);margin:0 0 1.2rem;color:var(--link);position:relative}
-    .section h2::after{content:"";width:60px;height:4px;background:linear-gradient(to right,var(--accent-start),var(--accent-end));position:absolute;bottom:-.5rem;left:0}
+    /* Hero */
+    .hero { padding: 4rem 0; background: linear-gradient(135deg, var(--accent-start), var(--accent-end)); text-align: center; color: #fff; }
+    .hero-content { max-width: 800px; margin: 0 auto; }
+    .hero .name {
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      margin: 0 0 0.4rem;
+      white-space: nowrap; /* keep on one line */
+    }
+    @media (max-width: 360px) { .hero .name { white-space: normal; } }
+    .hero .headline { font-size: clamp(1.2rem, 3.5vw, 1.8rem); font-weight: 600; }
+    .lead { color: #e6f6f3; max-width: 70ch; margin: 1rem auto; }
+    .cta { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.7rem 1.4rem; border: 2px solid #fff; border-radius: 0.75rem; font-weight: 600; color: #fff; background: rgba(255, 255, 255, 0.1); transition: all 0.3s ease; }
+    .cta:hover { background: rgba(255, 255, 255, 0.2); box-shadow: 0 0 0 4px var(--ring); transform: translateY(-2px); }
+    .cta-row { display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center; margin-top: 2rem; }
+    .avatar { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: 0 6px 12px rgba(0,0,0,0.2); margin: 1rem auto; }
+    @media (min-width: 900px) { .avatar { width: 250px; height: 250px; } }
 
-    .card{background:var(--panel);border:1px solid var(--chip);border-radius:1rem;padding:1.4rem;box-shadow:0 4px 8px rgba(0,0,0,.05);transition:.3s}
-    .card:hover{transform:translateY(-4px);box-shadow:0 8px 18px rgba(0,0,0,.1)}
-    .two-col{display:grid;gap:1.4rem}
-    @media (min-width:900px){.two-col{grid-template-columns:repeat(2,1fr)}}
-    .three-col{display:grid;gap:1.4rem}
-    @media (min-width:900px){.three-col{grid-template-columns:repeat(3,1fr)}}
-    .meta{color:var(--muted);font-size:1rem;margin:.4rem 0 .6rem}
-    .chips{display:flex;flex-wrap:wrap;gap:.6rem}
-    .chips.column{flex-direction:column;align-items:flex-start}
-    .chip{background:var(--chip);border:2px solid var(--link);padding:.32rem .85rem;border-radius:1.5rem;font-size:1rem;color:var(--link)}
-    .list{list-style:disc;padding-left:1.4rem;margin:.4rem 0}
-    .list li{margin-bottom:.55rem;overflow-wrap:anywhere}
-    .kicker{text-transform:uppercase;font-size:.9rem;color:var(--muted);letter-spacing:.1em;margin-bottom:.6rem}
+    /* Sections */
+    .section { padding: 3rem 0; scroll-margin-top: 7rem; }
+    .section h2 { font-size: clamp(1.6rem, 4vw, 2rem); margin: 0 0 1.5rem; color: var(--link); position: relative; }
+    .section h2::after { content: ""; width: 60px; height: 4px; background: linear-gradient(to right, var(--accent-start), var(--accent-end)); position: absolute; bottom: -0.5rem; left: 0; }
+    .card { background: var(--panel); border: 1px solid var(--chip); border-radius: 1rem; padding: 1.8rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); transition: all 0.3s ease; content-visibility: auto; contain-intrinsic-size: 600px; }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
+    .two-col { display: grid; gap: 2rem; }
+    @media (min-width: 900px) { .two-col { grid-template-columns: repeat(2, 1fr); } }
+    .three-col { display: grid; gap: 2rem; }
+    @media (min-width: 900px) { .three-col { grid-template-columns: repeat(3, 1fr); } }
+    .meta { color: var(--muted); font-size: 1rem; margin-bottom: 0.7rem; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+    .chips.column { flex-direction: column; align-items: flex-start; }
+    .chip { background: var(--chip); border: 2px solid var(--link); padding: 0.35rem 0.9rem; border-radius: 1.5rem; font-size: 1rem; color: var(--link); transition: background 0.2s; display: inline-block; }
+    .chip:hover { background: var(--accent-start); }
+    .list { list-style-type: disc; padding-left: 1.8rem; margin: 0.7rem 0; }
+    .list li { margin-bottom: 0.7rem; overflow-wrap: anywhere; }
+    .kicker { text-transform: uppercase; font-size: 0.9rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 0.7rem; }
 
     /* Publications */
-    .pub-filter{display:flex;gap:.6rem;flex-wrap:wrap;margin:.6rem 0 1.2rem}
-    .pub-filter button{padding:.55rem 1rem;border:2px solid var(--chip);background:var(--bg);border-radius:.75rem;cursor:pointer;transition:.2s}
-    .pub-filter button[aria-pressed="true"]{background:var(--chip);font-weight:600;color:var(--link)}
-    .pub{padding:1rem;border:2px solid var(--chip);border-radius:.75rem;margin-bottom:1rem}
-    .pub .summary{color:var(--muted);font-size:1rem;margin-top:.4rem}
+    .pub-filter { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 0.8rem 0 1.5rem; }
+    .pub-filter button { padding: 0.6rem 1.2rem; border: 2px solid var(--chip); background: var(--bg); border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease; }
+    .pub-filter button[aria-pressed="true"] { background: var(--chip); font-weight: 600; color: var(--link); }
+    .pub { padding: 1.2rem; border: 2px solid var(--chip); border-radius: 0.75rem; margin-bottom: 1.2rem; }
+    .pub .summary { color: var(--muted); font-size: 1rem; margin-top: 0.4rem; }
 
     /* CONTACT — modern cards */
-    .contact-wrap{
+    .contact-wrap {
+      position: relative;
       background:
-        radial-gradient(900px 350px at 10% 0%, rgba(67,206,162,.15), transparent 45%),
-        radial-gradient(700px 260px at 90% 20%, rgba(24,90,157,.15), transparent 55%);
-      border-radius:1.25rem;padding:1.6rem;border:1px solid var(--chip)
+        radial-gradient(1200px 400px at 10% 0%, rgba(67,206,162,0.15), transparent 40%),
+        radial-gradient(800px 300px at 90% 20%, rgba(24,90,157,0.15), transparent 50%);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      border: 1px solid var(--chip);
     }
-    .contact-grid{display:grid;gap:1rem;grid-template-columns:1fr}
-    @media (min-width:720px){.contact-grid{grid-template-columns:repeat(2,1fr)}}
-    .contact-card{
-      background:linear-gradient(180deg,var(--panel),rgba(255,255,255,.6));
-      border:1px solid var(--chip);border-radius:1rem;padding:1rem;display:flex;gap:.9rem;align-items:flex-start;
-      box-shadow:0 6px 18px rgba(0,0,0,.06);transition:transform .2s, box-shadow .2s
+    .contact-grid {
+      display: grid;
+      gap: 1.2rem;
+      grid-template-columns: 1fr;
     }
-    .contact-card:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.1)}
-    .contact-icon{flex:0 0 44px;width:44px;height:44px;border-radius:.75rem;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:#fff}
-    .contact-title{margin:0;font-weight:700}
-    .contact-link{display:inline-block;margin-top:.25rem;word-break:break-word}
-    .contact-actions{margin-top:.6rem;display:flex;gap:.5rem;flex-wrap:wrap}
-    .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .8rem;border-radius:.6rem;border:1px solid var(--chip);background:var(--bg);color:var(--link);font-weight:600;cursor:pointer;transition:background .2s, transform .1s}
-    .btn:hover{background:var(--chip)}
-    .btn[disabled]{opacity:.6;cursor:default}
+    @media (min-width: 720px) { .contact-grid { grid-template-columns: repeat(2, 1fr); } }
+    .contact-card {
+      background: linear-gradient(180deg, var(--panel), rgba(255,255,255,0.6));
+      border: 1px solid var(--chip);
+      border-radius: 1rem;
+      padding: 1.2rem 1.2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .contact-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,0.10); }
+    .contact-icon {
+      flex: 0 0 44px; width: 44px; height: 44px;
+      border-radius: 0.75rem;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+      color: #fff;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.25);
+    }
+    .contact-body { flex: 1; min-width: 0; }
+    .contact-title { margin: 0; font-weight: 700; }
+    .contact-link { display: inline-block; margin-top: 0.25rem; word-break: break-word; }
+    .contact-actions { margin-top: 0.6rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .45rem .8rem; border-radius: .6rem;
+      border: 1px solid var(--chip); background: var(--bg); color: var(--link);
+      font-weight: 600; cursor: pointer;
+      transition: background .2s ease, transform .1s ease;
+    }
+    .btn:hover { background: var(--chip); }
+    .btn:active { transform: translateY(1px); }
+    .btn[disabled] { opacity: .6; cursor: default; }
 
-    /* A11y & print */
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0)}
-    a:focus-visible,button:focus-visible,.cta:focus-visible,.btn:focus-visible{outline:3px solid var(--link);outline-offset:4px;border-radius:.75rem}
-    .reveal{opacity:0;transform:translateY(16px);transition:all .45s}
-    .reveal.visible{opacity:1;transform:none}
-    @media (prefers-reduced-motion:reduce){
-      .reveal,.reveal.visible{opacity:1;transform:none;transition:none}
-    }
-    footer{padding:2rem 0;text-align:center;font-size:1rem;color:var(--muted);border-top:2px solid var(--chip)}
-    .mono{font-family:var(--font-mono)}
-    @media print{
-      *{background:transparent !important;box-shadow:none !important}
-      body{color:#000}
-      header.site,nav.primary,.hero,.cta{display:none !important}
-      .container{max-width:none;padding:0 15mm}
+    /* Footer */
+    footer { padding: 3rem 0; text-align: center; font-size: 1rem; color: var(--muted); border-top: 2px solid var(--chip); }
+    .mono { font-family: var(--font-mono); }
+
+    /* Accessibility & Animations */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+    a:focus-visible, button:focus-visible, .cta:focus-visible, .btn:focus-visible { outline: 3px solid var(--link); outline-offset: 4px; border-radius: 0.75rem; }
+    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { opacity: 1; transform: none; transition: none; } }
+
+    /* Print Styles */
+    @media print {
+      * { background: transparent !important; box-shadow: none !important; }
+      body { color: #000; }
+      header.site, .pub-filter, .cta-row, nav.primary { display: none !important; }
+      a[href]::after { content: " (" attr(href) ")"; font-size: 0.9em; }
+      .container { max-width: none; padding: 0 15mm; }
     }
   </style>
 
@@ -190,7 +235,7 @@
   }
   </script>
 
-  <!-- Optional: structured data for the article -->
+  <!-- Optional: structured data for the article (keep if accurate) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -206,9 +251,7 @@
 </head>
 <body>
   <a class="sr-only" href="#main">Skip to content</a>
-
-  <!-- FIXED HEADER -->
-  <header class="site" id="siteHeader">
+  <header class="site">
     <div class="container nav">
       <a class="brand" href="/">Rafia Hasnat Jinia</a>
       <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation">☰</button>
@@ -226,28 +269,29 @@
     </div>
   </header>
 
-  <!-- STICKY, SMALL HERO (always visible) -->
-  <section class="hero" id="hero">
-    <div class="hero-content">
-      <img src="assets/profile.jpg" alt="Portrait of Rafia Hasnat Jinia" class="avatar" width="120" height="120" decoding="async" fetchpriority="high">
-      <div class="hero-text">
-        <h1 class="name">Rafia Hasnat Jinia</h1>
-        <p class="headline">Biomedical Engineer &amp; Ph.D. Aspirant</p>
-      </div>
-      <div class="hero-cta">
-        <a class="cta" href="assets/Rafia_Hasnat_Jinia_CV.pdf" download>Download CV</a>
-        <a class="cta" href="mailto:rafiahasnatjinia@gmail.com">Email</a>
-      </div>
-    </div>
-  </section>
-
   <main id="main" class="container">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-content">
+        <img src="assets/profile.jpg" alt="Portrait of Rafia Hasnat Jinia" class="avatar" width="250" height="250" decoding="async" fetchpriority="high" sizes="(min-width: 900px) 250px, 200px">
+        <h1 class="name">Rafia Hasnat Jinia</h1>
+        <h2 class="headline">Biomedical Engineer &amp; Ph.D. Aspirant</h2>
+        <p class="lead">Developing innovative biomaterials to combat antibacterial resistance and enhance wound healing, with a focus on translating research into clinical solutions.</p>
+        <div class="cta-row">
+          <a class="cta" href="assets/Rafia_Hasnat_Jinia_CV.pdf" download>Download CV</a>
+          <a class="cta" href="https://www.linkedin.com/in/rafia-hasnat-jinia" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="cta" href="https://www.researchgate.net/profile/Rafia-Hasnat-Jinia" target="_blank" rel="noopener">ResearchGate</a>
+          <a class="cta" href="mailto:rafiahasnatjinia@gmail.com">Email</a>
+        </div>
+      </div>
+    </section>
+
     <!-- ABOUT -->
     <section id="about" class="section">
       <h2>About Me</h2>
       <div class="two-col">
         <div class="card reveal">
-          <p>I hold an M.Sc. in Biomedical Engineering from BUET, where my thesis explored tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds. This work involved developing dual-functional biomaterials that promote wound healing while managing infections through in vitro, in vivo, and in silico evaluations. As a Senior Product Development Engineer at BioEnclave—a company dedicated to regenerative healthcare solutions—I optimize advanced wound dressings like CuraGel™ and AmnioVive™, coordinating clinical trials and collaborating on innovative medical devices. With hands-on experience in electrospinning, nanoparticle synthesis, and molecular simulations, I'm eager to pursue a Ph.D. to further advance drug delivery and tissue engineering in resource-constrained settings.</p>
+          <p>I hold an M.Sc. in Biomedical Engineering from BUET, where my thesis explored tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds. This work involved developing dual-functional biomaterials that promote wound healing while managing infections through in vitro, in vivo, and in silico evaluations. As a Senior Product Development Engineer at <a href="https://thebioltd.com/" target="_blank" rel="noopener">BioEnclave</a>—a company dedicated to regenerative healthcare solutions—I optimize advanced wound dressings like CuraGel™ and AmnioVive™, coordinating clinical trials and collaborating on innovative medical devices. With hands-on experience in electrospinning, nanoparticle synthesis, and molecular simulations, I'm eager to pursue a Ph.D. to further advance drug delivery and tissue engineering in resource-constrained settings.</p>
         </div>
         <div class="card reveal">
           <h3>Education</h3>
@@ -296,7 +340,7 @@
         </div>
       </div>
 
-      <div class="card" style="margin-top: 1.4rem;">
+      <div class="card" style="margin-top: 2rem;">
         <h3 class="kicker">Experimental Skills</h3>
         <ul class="list">
           <li>Skilled in electrospun fiber and nanoparticle preparation, characterization (SEM, TEM, FTIR, XRD, DSC), and statistical analysis.</li>
@@ -466,7 +510,7 @@
           </div>
         </div>
       </div>
-      <div class="card" style="margin-top: 1.4rem;">
+      <div class="card" style="margin-top: 2rem;">
         <h3>Molecular Dynamics</h3>
         <div class="chips">
           <span class="chip">Autodock Vina</span>
@@ -475,7 +519,7 @@
           <span class="chip">Biovia</span>
         </div>
       </div>
-      <div class="card" style="margin-top: 1.4rem;">
+      <div class="card" style="margin-top: 2rem;">
         <h3>Graphing &amp; Reference Software</h3>
         <div class="chips">
           <span class="chip">OriginLab</span>
@@ -486,7 +530,7 @@
           <span class="chip">Chemsketch</span>
         </div>
       </div>
-      <div class="card" style="margin-top: 1.4rem;">
+      <div class="card" style="margin-top: 2rem;">
         <h3>Others</h3>
         <div class="chips">
           <span class="chip">Microsoft Office</span>
@@ -530,14 +574,15 @@
           <!-- Email -->
           <article class="contact-card">
             <div class="contact-icon" aria-hidden="true">
+              <!-- Envelope icon -->
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-            <div>
+            <div class="contact-body">
               <p class="contact-title">Email</p>
               <a class="contact-link" href="mailto:rafiahasnatjinia@gmail.com">rafiahasnatjinia@gmail.com</a>
               <div class="contact-actions">
-                <a class="btn" href="mailto:rafiahasnatjinia@gmail.com">Compose</a>
-                <button class="btn copy-btn" data-copy="rafiahasnatjinia@gmail.com">Copy</button>
+                <a class="btn" href="mailto:rafiahasnatjinia@gmail.com" aria-label="Compose email">Compose</a>
+                <button class="btn copy-btn" data-copy="rafiahasnatjinia@gmail.com" aria-label="Copy email to clipboard">Copy</button>
               </div>
             </div>
           </article>
@@ -545,14 +590,15 @@
           <!-- LinkedIn -->
           <article class="contact-card">
             <div class="contact-icon" aria-hidden="true">
+              <!-- LinkedIn icon -->
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.5 8.5h4V23h-4V8.5Zm7.5 0h3.8v2h.1c.53-1 1.83-2.1 3.77-2.1 4.03 0 4.78 2.65 4.78 6.1V23h-3.98v-7.3c0-1.74-.03-3.98-2.43-3.98-2.43 0-2.8 1.9-2.8 3.86V23H8V8.5Z" fill="currentColor"/></svg>
             </div>
-            <div>
+            <div class="contact-body">
               <p class="contact-title">LinkedIn</p>
               <a class="contact-link" href="https://www.linkedin.com/in/rafia-hasnat-jinia" target="_blank" rel="noopener">linkedin.com/in/rafia-hasnat-jinia</a>
               <div class="contact-actions">
-                <a class="btn" href="https://www.linkedin.com/in/rafia-hasnat-jinia" target="_blank" rel="noopener">Open</a>
-                <button class="btn copy-btn" data-copy="https://www.linkedin.com/in/rafia-hasnat-jinia">Copy</button>
+                <a class="btn" href="https://www.linkedin.com/in/rafia-hasnat-jinia" target="_blank" rel="noopener" aria-label="Open LinkedIn profile">Open</a>
+                <button class="btn copy-btn" data-copy="https://www.linkedin.com/in/rafia-hasnat-jinia" aria-label="Copy LinkedIn URL">Copy</button>
               </div>
             </div>
           </article>
@@ -560,14 +606,15 @@
           <!-- ResearchGate -->
           <article class="contact-card">
             <div class="contact-icon" aria-hidden="true">
+              <!-- RG icon (book-ish) -->
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 3h12a3 3 0 0 1 3 3v14l-4-3-4 3-4-3-4 3V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
             </div>
-            <div>
+            <div class="contact-body">
               <p class="contact-title">ResearchGate</p>
               <a class="contact-link" href="https://www.researchgate.net/profile/Rafia-Hasnat-Jinia" target="_blank" rel="noopener">researchgate.net/profile/Rafia-Hasnat-Jinia</a>
               <div class="contact-actions">
-                <a class="btn" href="https://www.researchgate.net/profile/Rafia-Hasnat-Jinia" target="_blank" rel="noopener">Open</a>
-                <button class="btn copy-btn" data-copy="https://www.researchgate.net/profile/Rafia-Hasnat-Jinia">Copy</button>
+                <a class="btn" href="https://www.researchgate.net/profile/Rafia-Hasnat-Jinia" target="_blank" rel="noopener" aria-label="Open ResearchGate profile">Open</a>
+                <button class="btn copy-btn" data-copy="https://www.researchgate.net/profile/Rafia-Hasnat-Jinia" aria-label="Copy ResearchGate URL">Copy</button>
               </div>
             </div>
           </article>
@@ -575,14 +622,15 @@
           <!-- Location -->
           <article class="contact-card">
             <div class="contact-icon" aria-hidden="true">
+              <!-- Map pin -->
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.33 7-11a7 7 0 1 0-14 0c0 5.67 7 11 7 11Z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/></svg>
             </div>
-            <div>
+            <div class="contact-body">
               <p class="contact-title">Location</p>
               <span class="contact-link">Dhaka, Bangladesh</span>
               <div class="contact-actions">
-                <a class="btn" href="https://maps.google.com/?q=Dhaka%2C%20Bangladesh" target="_blank" rel="noopener">Maps</a>
-                <button class="btn copy-btn" data-copy="Dhaka, Bangladesh">Copy</button>
+                <a class="btn" href="https://maps.google.com/?q=Dhaka%2C%20Bangladesh" target="_blank" rel="noopener" aria-label="Open location in Google Maps">Maps</a>
+                <button class="btn copy-btn" data-copy="Dhaka, Bangladesh" aria-label="Copy location text">Copy</button>
               </div>
             </div>
           </article>
@@ -590,83 +638,123 @@
       </div>
     </section>
 
+    <!-- FOOTER -->
     <footer>
       <p class="mono">&copy; <span id="year"></span> Rafia Hasnat Jinia</p>
     </footer>
   </main>
 
   <script>
-    // Year
+    // Year (auto-updating)
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Mobile menu
+    // Mobile menu: open/close + focus restore + Esc-to-close
     const menuBtn = document.getElementById('menuBtn');
     const nav = document.getElementById('primaryNav');
     let lastFocus = null;
-    function openNav(){ lastFocus = document.activeElement; nav.classList.add('open'); menuBtn.setAttribute('aria-expanded','true'); nav.querySelector('a')?.focus(); }
-    function closeNav(){ nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); lastFocus?.focus(); }
-    menuBtn.addEventListener('click', ()=> menuBtn.getAttribute('aria-expanded')==='true' ? closeNav() : openNav());
-    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ if (window.innerWidth<=1100) closeNav(); }));
-    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeNav(); });
 
-    // Publication filter
-    const pubButtons=document.querySelectorAll('.pub-filter button');
-    const pubs=document.querySelectorAll('#pub-list .pub');
-    const pubStatus=document.getElementById('pub-status');
-    pubButtons.forEach(btn=>btn.addEventListener('click',()=>{
-      const f=btn.dataset.filter; pubs.forEach(p=>p.style.display=(f==='all'||p.dataset.status===f)?'':'none');
-      pubButtons.forEach(b=>b.setAttribute('aria-pressed', String(b===btn)));
-      const visible=[...pubs].filter(p=>p.style.display!=='none').length;
-      pubStatus.textContent=`${visible} item${visible!==1?'s':''} shown (${f})`;
+    function openNav() {
+      lastFocus = document.activeElement;
+      nav.classList.add('open');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      const firstLink = nav.querySelector('a');
+      if (firstLink) firstLink.focus();
+    }
+    function closeNav() {
+      nav.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      if (lastFocus) lastFocus.focus();
+    }
+
+    menuBtn.addEventListener('click', () => {
+      const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
+      isOpen ? closeNav() : openNav();
+    });
+
+    // Close the menu after clicking a link on small screens (≤1100px)
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      if (window.innerWidth <= 1100) closeNav();
     }));
 
-    // Reveal on scroll
-    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
-      const ob=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ob.unobserve(e.target);}}),{threshold:0.2});
-      document.querySelectorAll('.reveal').forEach(el=>ob.observe(el));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeNav();
+    });
+
+    // Publication filter: accessible state + live updates
+    const pubButtons = document.querySelectorAll('.pub-filter button');
+    const pubs = document.querySelectorAll('#pub-list .pub');
+    const pubStatus = document.getElementById('pub-status');
+
+    pubButtons.forEach(btn => btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      pubs.forEach(pub => {
+        const show = (filter === 'all' || pub.dataset.status === filter);
+        pub.style.display = show ? '' : 'none';
+      });
+      pubButtons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      const visible = [...pubs].filter(p => p.style.display !== 'none').length;
+      pubStatus.textContent = `${visible} item${visible !== 1 ? 's' : ''} shown (${filter})`;
+    }));
+
+    // Reveal on scroll (respect reduced motion)
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     }
 
-    // Precise scroll-spy: use an anchor line just below sticky area, sample with elementFromPoint
-    const header = document.getElementById('siteHeader');
-    const hero   = document.getElementById('hero');
-    const navLinks = Array.from(document.querySelectorAll('nav.primary a'));
+    // Scroll-spy: highlight current section in nav
+    const sections = [...document.querySelectorAll('.hero, main .section')];
+    const navLinks = [...document.querySelectorAll('nav.primary a')];
+    const linkFor = (id) => navLinks.find(a => a.getAttribute('href') === `#${id}`);
 
-    function setActive(id){
-      navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href')===`#${id}`));
+    if ('IntersectionObserver' in window) {
+      const spy = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(a => a.classList.remove('active'));
+            const link = linkFor(entry.target.id);
+            if (link) link.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+      sections.forEach(sec => sec.id && spy.observe(sec));
     }
-    let ticking=false;
-    function spy(){
-      ticking=false;
-      const anchorY = header.offsetHeight + hero.offsetHeight + 8; // below sticky area
-      const anchorX = Math.max(0, Math.min(window.innerWidth-1, window.innerWidth/2));
-      const el = document.elementFromPoint(anchorX, anchorY);
-      const sec = el && el.closest ? el.closest('.section') : null;
-      if (sec && sec.id) setActive(sec.id);
-      else if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2){
-        // at bottom -> last section
-        const sections = document.querySelectorAll('main .section');
-        const last = sections[sections.length-1]; if(last) setActive(last.id);
+
+    // Copy-to-clipboard for Contact buttons
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
       }
-    }
-    function onScroll(){
-      if(!ticking){ window.requestAnimationFrame(spy); ticking=true; }
-    }
-    document.addEventListener('scroll', onScroll, { passive:true });
-    window.addEventListener('resize', onScroll);
-    window.addEventListener('load', onScroll);
-
-    // Copy-to-clipboard (contact)
-    function copyText(text){
-      if(navigator.clipboard && window.isSecureContext){ return navigator.clipboard.writeText(text); }
-      const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.left='-9999px'; document.body.appendChild(ta);
-      ta.select(); try{ document.execCommand('copy'); } finally{ document.body.removeChild(ta); }
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      try { document.execCommand('copy'); } finally { document.body.removeChild(ta); }
       return Promise.resolve();
     }
-    document.querySelectorAll('.copy-btn').forEach(btn=>{
-      btn.addEventListener('click', async ()=>{
-        const original=btn.textContent;
-        try{ await copyText(btn.dataset.copy); btn.textContent='Copied!'; btn.disabled=true; setTimeout(()=>{btn.textContent=original; btn.disabled=false;}, 1400); }
-        catch{ btn.textContent='Failed'; setTimeout(()=>{btn.textContent=original;}, 1400); }
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const original = btn.textContent;
+        try {
+          await copyText(btn.dataset.copy);
+          btn.textContent = 'Copied!';
+          btn.disabled = true;
+          setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1400);
+        } catch {
+          btn.textContent = 'Failed';
+          setTimeout(() => { btn.textContent = original; }, 1400);
+        }
       });
     });
   </script>
