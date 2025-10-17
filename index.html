@@ -130,7 +130,7 @@
     @media (min-width: 900px) { .three-col { grid-template-columns: repeat(3, 1fr); } }
     .meta { color: var(--muted); font-size: 1rem; margin-bottom: 0.7rem; }
     .chips { display: flex; flex-wrap: wrap; gap: 0.8rem; }
-    .chips.column { flex-direction: column; align-items: flex-start; } /* single column interests */
+    .chips.column { flex-direction: column; align-items: flex-start; }
     .chip { background: var(--chip); border: 2px solid var(--link); padding: 0.35rem 0.9rem; border-radius: 1.5rem; font-size: 1rem; color: var(--link); transition: background 0.2s; display: inline-block; }
     .chip:hover { background: var(--accent-start); }
     .list { list-style-type: disc; padding-left: 1.8rem; margin: 0.7rem 0; }
@@ -144,16 +144,67 @@
     .pub { padding: 1.2rem; border: 2px solid var(--chip); border-radius: 0.75rem; margin-bottom: 1.2rem; }
     .pub .summary { color: var(--muted); font-size: 1rem; margin-top: 0.4rem; }
 
-    /* Accessibility & Animations */
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
-    a:focus-visible, button:focus-visible, .cta:focus-visible { outline: 3px solid var(--link); outline-offset: 4px; border-radius: 0.75rem; }
-    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
-    @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { opacity: 1; transform: none; transition: none; } }
+    /* CONTACT — modern cards */
+    .contact-wrap {
+      position: relative;
+      background:
+        radial-gradient(1200px 400px at 10% 0%, rgba(67,206,162,0.15), transparent 40%),
+        radial-gradient(800px 300px at 90% 20%, rgba(24,90,157,0.15), transparent 50%);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      border: 1px solid var(--chip);
+    }
+    .contact-grid {
+      display: grid;
+      gap: 1.2rem;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 720px) { .contact-grid { grid-template-columns: repeat(2, 1fr); } }
+    .contact-card {
+      background: linear-gradient(180deg, var(--panel), rgba(255,255,255,0.6));
+      border: 1px solid var(--chip);
+      border-radius: 1rem;
+      padding: 1.2rem 1.2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .contact-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,0.10); }
+    .contact-icon {
+      flex: 0 0 44px; width: 44px; height: 44px;
+      border-radius: 0.75rem;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+      color: #fff;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.25);
+    }
+    .contact-body { flex: 1; min-width: 0; }
+    .contact-title { margin: 0; font-weight: 700; }
+    .contact-link { display: inline-block; margin-top: 0.25rem; word-break: break-word; }
+    .contact-actions { margin-top: 0.6rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .45rem .8rem; border-radius: .6rem;
+      border: 1px solid var(--chip); background: var(--bg); color: var(--link);
+      font-weight: 600; cursor: pointer;
+      transition: background .2s ease, transform .1s ease;
+    }
+    .btn:hover { background: var(--chip); }
+    .btn:active { transform: translateY(1px); }
+    .btn[disabled] { opacity: .6; cursor: default; }
 
     /* Footer */
     footer { padding: 3rem 0; text-align: center; font-size: 1rem; color: var(--muted); border-top: 2px solid var(--chip); }
     .mono { font-family: var(--font-mono); }
+
+    /* Accessibility & Animations */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+    a:focus-visible, button:focus-visible, .cta:focus-visible, .btn:focus-visible { outline: 3px solid var(--link); outline-offset: 4px; border-radius: 0.75rem; }
+    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { opacity: 1; transform: none; transition: none; } }
 
     /* Print Styles */
     @media print {
@@ -219,6 +270,7 @@
   </header>
 
   <main id="main" class="container">
+    <!-- HERO -->
     <section class="hero" id="top">
       <div class="hero-content">
         <img src="assets/profile.jpg" alt="Portrait of Rafia Hasnat Jinia" class="avatar" width="250" height="250" decoding="async" fetchpriority="high" sizes="(min-width: 900px) 250px, 200px">
@@ -234,6 +286,7 @@
       </div>
     </section>
 
+    <!-- ABOUT -->
     <section id="about" class="section">
       <h2>About Me</h2>
       <div class="two-col">
@@ -250,6 +303,7 @@
       </div>
     </section>
 
+    <!-- RESEARCH -->
     <section id="research" class="section">
       <h2>Research Focus</h2>
       <div class="three-col">
@@ -304,6 +358,7 @@
       </div>
     </section>
 
+    <!-- PUBLICATIONS -->
     <section id="publications" class="section">
       <h2>Publications</h2>
       <div class="pub-filter" role="toolbar" aria-label="Filter publications">
@@ -325,6 +380,7 @@
       </div>
     </section>
 
+    <!-- EXPERIENCE -->
     <section id="experience" class="section">
       <h2>Professional Experience</h2>
       <div class="two-col">
@@ -365,6 +421,7 @@
       </div>
     </section>
 
+    <!-- TRAINING -->
     <section id="training" class="section">
       <h2>Training, Internships &amp; Workshops</h2>
       <div class="two-col">
@@ -396,6 +453,7 @@
       </div>
     </section>
 
+    <!-- PROJECTS -->
     <section id="projects" class="section">
       <h2>Projects</h2>
       <div class="three-col">
@@ -427,6 +485,7 @@
       </div>
     </section>
 
+    <!-- SKILLS -->
     <section id="skills" class="section">
       <h2>Skills &amp; Tools</h2>
       <div class="two-col">
@@ -481,6 +540,7 @@
       </div>
     </section>
 
+    <!-- AWARDS -->
     <section id="awards" class="section">
       <h2>Awards &amp; Leadership</h2>
       <div class="two-col">
@@ -506,23 +566,86 @@
       </div>
     </section>
 
+    <!-- CONTACT (modern) -->
     <section id="contact" class="section">
       <h2>Contact</h2>
-      <div class="card reveal">
-        <p>Email: <a href="mailto:rafiahasnatjinia@gmail.com">rafiahasnatjinia@gmail.com</a></p>
-        <p>LinkedIn: <a href="https://www.linkedin.com/in/rafia-hasnat-jinia" target="_blank" rel="noopener">linkedin.com/in/rafia-hasnat-jinia</a></p>
-        <p>ResearchGate: <a href="https://www.researchgate.net/profile/Rafia-Hasnat-Jinia" target="_blank" rel="noopener">researchgate.net/profile/Rafia-Hasnat-Jinia</a></p>
-        <p class="muted">Dhaka, Bangladesh</p>
+      <div class="contact-wrap reveal">
+        <div class="contact-grid">
+          <!-- Email -->
+          <article class="contact-card">
+            <div class="contact-icon" aria-hidden="true">
+              <!-- Envelope icon -->
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="contact-body">
+              <p class="contact-title">Email</p>
+              <a class="contact-link" href="mailto:rafiahasnatjinia@gmail.com">rafiahasnatjinia@gmail.com</a>
+              <div class="contact-actions">
+                <a class="btn" href="mailto:rafiahasnatjinia@gmail.com" aria-label="Compose email">Compose</a>
+                <button class="btn copy-btn" data-copy="rafiahasnatjinia@gmail.com" aria-label="Copy email to clipboard">Copy</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- LinkedIn -->
+          <article class="contact-card">
+            <div class="contact-icon" aria-hidden="true">
+              <!-- LinkedIn icon -->
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.5 8.5h4V23h-4V8.5Zm7.5 0h3.8v2h.1c.53-1 1.83-2.1 3.77-2.1 4.03 0 4.78 2.65 4.78 6.1V23h-3.98v-7.3c0-1.74-.03-3.98-2.43-3.98-2.43 0-2.8 1.9-2.8 3.86V23H8V8.5Z" fill="currentColor"/></svg>
+            </div>
+            <div class="contact-body">
+              <p class="contact-title">LinkedIn</p>
+              <a class="contact-link" href="https://www.linkedin.com/in/rafia-hasnat-jinia" target="_blank" rel="noopener">linkedin.com/in/rafia-hasnat-jinia</a>
+              <div class="contact-actions">
+                <a class="btn" href="https://www.linkedin.com/in/rafia-hasnat-jinia" target="_blank" rel="noopener" aria-label="Open LinkedIn profile">Open</a>
+                <button class="btn copy-btn" data-copy="https://www.linkedin.com/in/rafia-hasnat-jinia" aria-label="Copy LinkedIn URL">Copy</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- ResearchGate -->
+          <article class="contact-card">
+            <div class="contact-icon" aria-hidden="true">
+              <!-- RG icon (book-ish) -->
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 3h12a3 3 0 0 1 3 3v14l-4-3-4 3-4-3-4 3V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="contact-body">
+              <p class="contact-title">ResearchGate</p>
+              <a class="contact-link" href="https://www.researchgate.net/profile/Rafia-Hasnat-Jinia" target="_blank" rel="noopener">researchgate.net/profile/Rafia-Hasnat-Jinia</a>
+              <div class="contact-actions">
+                <a class="btn" href="https://www.researchgate.net/profile/Rafia-Hasnat-Jinia" target="_blank" rel="noopener" aria-label="Open ResearchGate profile">Open</a>
+                <button class="btn copy-btn" data-copy="https://www.researchgate.net/profile/Rafia-Hasnat-Jinia" aria-label="Copy ResearchGate URL">Copy</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Location -->
+          <article class="contact-card">
+            <div class="contact-icon" aria-hidden="true">
+              <!-- Map pin -->
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.33 7-11a7 7 0 1 0-14 0c0 5.67 7 11 7 11Z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/></svg>
+            </div>
+            <div class="contact-body">
+              <p class="contact-title">Location</p>
+              <span class="contact-link">Dhaka, Bangladesh</span>
+              <div class="contact-actions">
+                <a class="btn" href="https://maps.google.com/?q=Dhaka%2C%20Bangladesh" target="_blank" rel="noopener" aria-label="Open location in Google Maps">Maps</a>
+                <button class="btn copy-btn" data-copy="Dhaka, Bangladesh" aria-label="Copy location text">Copy</button>
+              </div>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
+    <!-- FOOTER -->
     <footer>
       <p class="mono">&copy; <span id="year"></span> Rafia Hasnat Jinia</p>
     </footer>
   </main>
 
   <script>
-    // Year
+    // Year (auto-updating)
     document.getElementById('year').textContent = new Date().getFullYear();
 
     // Mobile menu: open/close + focus restore + Esc-to-close
@@ -601,9 +724,39 @@
           }
         });
       }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-
       sections.forEach(sec => sec.id && spy.observe(sec));
     }
+
+    // Copy-to-clipboard for Contact buttons
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      try { document.execCommand('copy'); } finally { document.body.removeChild(ta); }
+      return Promise.resolve();
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const original = btn.textContent;
+        try {
+          await copyText(btn.dataset.copy);
+          btn.textContent = 'Copied!';
+          btn.disabled = true;
+          setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1400);
+        } catch {
+          btn.textContent = 'Failed';
+          setTimeout(() => { btn.textContent = original; }, 1400);
+        }
+      });
+    });
   </script>
 </body>
 </html>
