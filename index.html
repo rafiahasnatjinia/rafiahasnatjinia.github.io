@@ -14,10 +14,8 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://rafiahasnatjinia.github.io/">
   <meta property="og:image" content="https://rafiahasnatjinia.github.io/assets/profile.jpg">
-  <meta property="og:image:alt" content="Rafia Hasnat Jinia portrait">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://rafiahasnatjinia.github.io/assets/profile.jpg">
-  <meta name="twitter:image:alt" content="Rafia Hasnat Jinia portrait">
 
   <!-- Icons -->
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -29,115 +27,158 @@
   <meta name="theme-color" content="#185a9d" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
 
-  <!-- Manifest -->
-  <link rel="manifest" href="assets/manifest.webmanifest" type="application/manifest+json">
+  <!-- PWA manifest -->
+  <link rel="manifest" href="assets/manifest.webmanifest">
 
   <!-- Preload hero image for LCP -->
   <link rel="preload" as="image" href="assets/profile.jpg">
 
   <style>
-    :root{
-      --bg:#ffffff;--panel:#f8fafc;--text:#1e293b;--muted:#64748b;--link:#185a9d;
-      --accent-start:#43cea2;--accent-end:#185a9d;--chip:#e6f6f3;--ring:rgba(67,206,162,.2);
-      --success:#065f46;--font-sans:'Helvetica Neue',Arial,sans-serif;--font-mono:'Courier New',monospace
+    :root {
+      --bg: #ffffff;
+      --panel: #f8fafc;
+      --text: #1e293b;
+      --muted: #64748b;
+      --link: #185a9d;
+      --accent-start: #43cea2;
+      --accent-end: #185a9d;
+      --chip: #e6f6f3;
+      --ring: rgba(67, 206, 162, 0.2);
+      --success: #065f46;
+      --font-sans: 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: 'Courier New', monospace;
     }
-    @media (prefers-color-scheme:dark){
-      :root{--bg:#0f172a;--panel:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--link:#43cea2;
-      --accent-start:#185a9d;--accent-end:#43cea2;--chip:#1e3a46;--ring:rgba(24,90,157,.3)}
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --panel: #1e293b;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --link: #43cea2;
+        --accent-start: #185a9d;
+        --accent-end: #43cea2;
+        --chip: #1e3a46;
+        --ring: rgba(24, 90, 157, 0.3);
+      }
     }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.6}
-    a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
-    .container{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+
+    /* Global layout + horizontal overflow guard */
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body { overflow-x: hidden; }             /* ← prevents accidental sideways scroll */
+    body { margin: 0; font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; }
+    img, svg, video { max-width: 100%; height: auto; display: block; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
 
     /* Header */
-    header.site{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--chip);backdrop-filter:blur(10px)}
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 0}
-    .brand{font-size:1.4rem;font-weight:700;color:var(--text)}
-    nav.primary{display:flex;gap:1.2rem}
-    nav.primary a{color:var(--muted);padding:.7rem 1.2rem;font-weight:500;border-radius:.5rem;transition:all .2s ease}
-    nav.primary a:hover,nav.primary a:focus{color:var(--link);background:var(--chip)}
-    nav.primary a.active{color:var(--link);border-bottom:3px solid var(--link)}
-    .menu-btn{display:none;padding:.7rem 1.2rem;border:1px solid var(--chip);border-radius:.5rem;background:var(--panel);cursor:pointer}
-    .menu-btn[aria-expanded="true"]{box-shadow:0 0 0 3px var(--ring)}
-    @media (max-width:900px){
-      nav.primary{display:none;position:absolute;top:70px;left:1.5rem;right:1.5rem;background:var(--panel);border:1px solid var(--chip);border-radius:.5rem;flex-direction:column;padding:1rem;gap:.7rem}
-      nav.primary.open{display:flex}
-      .menu-btn{display:inline-flex}
+    header.site { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 1px solid var(--chip); backdrop-filter: blur(10px); }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; }
+    .brand { font-size: 1.4rem; font-weight: 700; color: var(--text); white-space: nowrap; }
+
+    nav.primary { display: flex; gap: 0.8rem; }     /* tighter gap on desktop */
+    nav.primary a { color: var(--muted); padding: 0.5rem 0.8rem; font-weight: 500; border-radius: 0.5rem; transition: all 0.2s ease; }
+    nav.primary a:hover, nav.primary a:focus { color: var(--link); background: var(--chip); }
+    nav.primary a.active { color: var(--link); border-bottom: 3px solid var(--link); }
+
+    .menu-btn { display: none; padding: 0.6rem 1rem; border: 1px solid var(--chip); border-radius: 0.5rem; background: var(--panel); cursor: pointer; }
+    .menu-btn[aria-expanded="true"] { box-shadow: 0 0 0 3px var(--ring); }
+
+    /* Collapse to hamburger a bit earlier to avoid overflow */
+    @media (max-width: 1100px) {
+      nav.primary {
+        display: none;
+        position: absolute;
+        top: 70px; left: 1.5rem; right: 1.5rem;
+        background: var(--panel);
+        border: 1px solid var(--chip);
+        border-radius: 0.5rem;
+        flex-direction: column;
+        padding: 1rem; gap: 0.7rem;
+      }
+      nav.primary.open { display: flex; }
+      .menu-btn { display: inline-flex; }
     }
 
     /* Hero */
-    .hero{padding:4rem 0;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));text-align:center;color:#fff}
-    .hero-content{max-width:800px;margin:0 auto}
-    .hero .name{font-size:clamp(2.5rem,8vw,3.5rem);margin:0 0 .4rem}
-    .hero .headline{font-size:clamp(1.3rem,4vw,1.8rem);font-weight:600}
-    .lead{color:#e6f6f3;max-width:70ch;margin:1rem auto}
-    .cta{display:inline-flex;align-items:center;gap:.6rem;padding:.7rem 1.4rem;border:2px solid #fff;border-radius:.75rem;font-weight:600;color:#fff;background:rgba(255,255,255,.1);transition:all .3s ease}
-    .cta:hover{background:rgba(255,255,255,.2);box-shadow:0 0 0 4px var(--ring);transform:translateY(-2px)}
-    .cta-row{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:2rem}
-    .avatar{width:200px;height:200px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 6px 12px rgba(0,0,0,.2);margin:1rem auto}
-    @media (min-width:900px){.avatar{width:250px;height:250px}}
+    .hero { padding: 4rem 0; background: linear-gradient(135deg, var(--accent-start), var(--accent-end)); text-align: center; color: #fff; }
+    .hero-content { max-width: 800px; margin: 0 auto; }
+    .hero .name { 
+      font-size: clamp(2.2rem, 6vw, 3.5rem); 
+      margin: 0 0 0.4rem; 
+      white-space: nowrap;                       /* ← keep on one line */
+    }
+    @media (max-width: 360px) {                  /* safety on ultra-small devices */
+      .hero .name { white-space: normal; }
+    }
+    .hero .headline { font-size: clamp(1.2rem, 3.5vw, 1.8rem); font-weight: 600; }
+    .lead { color: #e6f6f3; max-width: 70ch; margin: 1rem auto; }
+    .cta { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.7rem 1.4rem; border: 2px solid #fff; border-radius: 0.75rem; font-weight: 600; color: #fff; background: rgba(255, 255, 255, 0.1); transition: all 0.3s ease; }
+    .cta:hover { background: rgba(255, 255, 255, 0.2); box-shadow: 0 0 0 4px var(--ring); transform: translateY(-2px); }
+    .cta-row { display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center; margin-top: 2rem; }
+    .avatar { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: 0 6px 12px rgba(0,0,0,0.2); margin: 1rem auto; }
+    @media (min-width: 900px) { .avatar { width: 250px; height: 250px; } }
 
     /* Sections */
-    .section{padding:3rem 0;scroll-margin-top:7rem}
-    .section h2{font-size:clamp(1.6rem,4vw,2rem);margin:0 0 1.5rem;color:var(--link);position:relative}
-    .section h2::after{content:"";width:60px;height:4px;background:linear-gradient(to right,var(--accent-start),var(--accent-end));position:absolute;bottom:-.5rem;left:0}
-    .card{background:var(--panel);border:1px solid var(--chip);border-radius:1rem;padding:1.8rem;box-shadow:0 4px 8px rgba(0,0,0,.05);transition:all .3s ease;content-visibility:auto;contain-intrinsic-size:600px}
-    .card:hover{transform:translateY(-6px);box-shadow:0 6px 16px rgba(0,0,0,.1)}
-    .two-col{display:grid;gap:2rem}
-    @media (min-width:900px){.two-col{grid-template-columns:repeat(2,1fr)}}
-    .three-col{display:grid;gap:2rem}
-    @media (min-width:900px){.three-col{grid-template-columns:repeat(3,1fr)}}
-    .meta{color:var(--muted);font-size:1rem;margin-bottom:.7rem}
-    .chips{display:flex;flex-wrap:wrap;gap:.8rem}
-    .chip{background:var(--chip);border:2px solid var(--link);padding:.4rem 1rem;border-radius:1.5rem;font-size:1rem;color:var(--link);transition:background .2s}
-    .chip:hover{background:var(--accent-start)}
-    .list{list-style-type:disc;padding-left:1.8rem;margin:.7rem 0}
-    .list li{margin-bottom:.7rem}
-    .kicker{text-transform:uppercase;font-size:.9rem;color:var(--muted);letter-spacing:.1em;margin-bottom:.7rem}
+    .section { padding: 3rem 0; scroll-margin-top: 7rem; }
+    .section h2 { font-size: clamp(1.6rem, 4vw, 2rem); margin: 0 0 1.5rem; color: var(--link); position: relative; }
+    .section h2::after { content: ""; width: 60px; height: 4px; background: linear-gradient(to right, var(--accent-start), var(--accent-end)); position: absolute; bottom: -0.5rem; left: 0; }
+    .card { background: var(--panel); border: 1px solid var(--chip); border-radius: 1rem; padding: 1.8rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); transition: all 0.3s ease; content-visibility: auto; contain-intrinsic-size: 600px; }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
+    .two-col { display: grid; gap: 2rem; }
+    @media (min-width: 900px) { .two-col { grid-template-columns: repeat(2, 1fr); } }
+    .three-col { display: grid; gap: 2rem; }
+    @media (min-width: 900px) { .three-col { grid-template-columns: repeat(3, 1fr); } }
+    .meta { color: var(--muted); font-size: 1rem; margin-bottom: 0.7rem; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+    .chip { background: var(--chip); border: 2px solid var(--link); padding: 0.4rem 1rem; border-radius: 1.5rem; font-size: 1rem; color: var(--link); transition: background 0.2s; }
+    .chip:hover { background: var(--accent-start); }
+    .list { list-style-type: disc; padding-left: 1.8rem; margin: 0.7rem 0; }
+    .list li { margin-bottom: 0.7rem; overflow-wrap: anywhere; } /* guard long text */
+    .kicker { text-transform: uppercase; font-size: 0.9rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 0.7rem; }
 
     /* Publications */
-    .pub-filter{display:flex;gap:.8rem;flex-wrap:wrap;margin:.8rem 0 1.5rem}
-    .pub-filter button{padding:.6rem 1.2rem;border:2px solid var(--chip);background:var(--bg);border-radius:.75rem;cursor:pointer;transition:all .2s}
-    .pub-filter button[aria-pressed="true"]{background:var(--chip);font-weight:600;color:var(--link)}
-    .pub{padding:1.2rem;border:2px solid var(--chip);border-radius:.75rem;margin-bottom:1.2rem}
-    .pub .summary{color:var(--muted);font-size:1rem;margin-top:.4rem}
+    .pub-filter { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 0.8rem 0 1.5rem; }
+    .pub-filter button { padding: 0.6rem 1.2rem; border: 2px solid var(--chip); background: var(--bg); border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease; }
+    .pub-filter button[aria-pressed="true"] { background: var(--chip); font-weight: 600; color: var(--link); }
+    .pub { padding: 1.2rem; border: 2px solid var(--chip); border-radius: 0.75rem; margin-bottom: 1.2rem; }
+    .pub .summary { color: var(--muted); font-size: 1rem; margin-top: 0.4rem; }
 
-    /* A11y & motion */
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0)}
-    a:focus-visible,button:focus-visible,.cta:focus-visible{outline:3px solid var(--link);outline-offset:4px;border-radius:.75rem}
-    .reveal{opacity:0;transform:translateY(20px);transition:all .5s ease}
-    .reveal.visible{opacity:1;transform:none}
-    @media (prefers-reduced-motion:reduce){.reveal,.reveal.visible{opacity:1;transform:none;transition:none}}
+    /* Accessibility & Animations */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+    a:focus-visible, button:focus-visible, .cta:focus-visible { outline: 3px solid var(--link); outline-offset: 4px; border-radius: 0.75rem; }
+    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { opacity: 1; transform: none; transition: none; } }
 
     /* Footer */
-    footer{padding:3rem 0;text-align:center;font-size:1rem;color:var(--muted);border-top:2px solid var(--chip)}
-    .mono{font-family:var(--font-mono)}
+    footer { padding: 3rem 0; text-align: center; font-size: 1rem; color: var(--muted); border-top: 2px solid var(--chip); }
+    .mono { font-family: var(--font-mono); }
 
-    /* Print */
-    @media print{
-      *{background:transparent!important;box-shadow:none!important}
-      body{color:#000}
-      header.site,.pub-filter,.cta-row,nav.primary{display:none!important}
-      a[href]::after{content:" (" attr(href) ")";font-size:.9em}
-      .container{max-width:none;padding:0 15mm}
+    /* Print Styles */
+    @media print {
+      * { background: transparent !important; box-shadow: none !important; }
+      body { color: #000; }
+      header.site, .pub-filter, .cta-row, nav.primary { display: none !important; }
+      a[href]::after { content: " (" attr(href) ")"; font-size: 0.9em; }
+      .container { max-width: none; padding: 0 15mm; }
     }
   </style>
 
   <!-- Schema.org Person -->
   <script type="application/ld+json">
   {
-    "@context":"https://schema.org",
-    "@type":"Person",
-    "name":"Rafia Hasnat Jinia",
-    "jobTitle":"Biomedical Engineer (M.Sc., Prospective Ph.D. Student)",
-    "address":{"@type":"PostalAddress","addressLocality":"Dhaka","addressCountry":"Bangladesh"},
-    "email":"mailto:rafiahasnatjinia@gmail.com",
-    "image":"https://rafiahasnatjinia.github.io/assets/profile.jpg",
-    "url":"https://rafiahasnatjinia.github.io/",
-    "affiliation":{"@type":"Organization","name":"Bangladesh University of Engineering and Technology (BUET)"},
-    "sameAs":[
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Rafia Hasnat Jinia",
+    "jobTitle": "Biomedical Engineer (M.Sc., Prospective Ph.D. Student)",
+    "address": { "@type": "PostalAddress", "addressLocality": "Dhaka", "addressCountry": "Bangladesh" },
+    "email": "mailto:rafiahasnatjinia@gmail.com",
+    "image": "https://rafiahasnatjinia.github.io/assets/profile.jpg",
+    "url": "https://rafiahasnatjinia.github.io/",
+    "affiliation": { "@type": "Organization", "name": "Bangladesh University of Engineering and Technology (BUET)" },
+    "sameAs": [
       "https://www.linkedin.com/in/rafia-hasnat-jinia",
       "https://www.researchgate.net/profile/Rafia-Hasnat-Jinia"
     ]
@@ -147,14 +188,14 @@
   <!-- Optional: structured data for the article (keep if accurate) -->
   <script type="application/ld+json">
   {
-    "@context":"https://schema.org",
-    "@type":"ScholarlyArticle",
-    "headline":"Mechanistic study of unoxidized tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds",
-    "author":[{"@type":"Person","name":"Rafia Hasnat Jinia"}],
-    "datePublished":"2025-01-01",
-    "isPartOf":{"@type":"PublicationVolume","name":"International Journal of Biological Macromolecules","volumeNumber":"330"},
-    "identifier":{"@type":"PropertyValue","propertyID":"DOI","value":"10.1016/j.ijbiomac.2025.147837"},
-    "url":"https://doi.org/10.1016/j.ijbiomac.2025.147837"
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Mechanistic study of unoxidized tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds",
+    "author": [{"@type":"Person","name":"Rafia Hasnat Jinia"}],
+    "datePublished": "2025-01-01",
+    "isPartOf": {"@type": "PublicationVolume","name": "International Journal of Biological Macromolecules","volumeNumber": "330"},
+    "identifier": {"@type":"PropertyValue","propertyID":"DOI","value":"10.1016/j.ijbiomac.2025.147837"},
+    "url": "https://doi.org/10.1016/j.ijbiomac.2025.147837"
   }
   </script>
 </head>
@@ -181,13 +222,7 @@
   <main id="main" class="container">
     <section class="hero" id="top">
       <div class="hero-content">
-        <img
-          src="assets/profile.jpg"
-          alt="Portrait of Rafia Hasnat Jinia"
-          class="avatar"
-          width="250" height="250"
-          decoding="async" fetchpriority="high"
-          sizes="(min-width: 900px) 250px, 200px">
+        <img src="assets/profile.jpg" alt="Portrait of Rafia Hasnat Jinia" class="avatar" width="250" height="250" decoding="async" fetchpriority="high" sizes="(min-width: 900px) 250px, 200px">
         <h1 class="name">Rafia Hasnat Jinia</h1>
         <h2 class="headline">Biomedical Engineer &amp; Ph.D. Aspirant</h2>
         <p class="lead">Developing innovative biomaterials to combat antibacterial resistance and enhance wound healing, with a focus on translating research into clinical solutions.</p>
@@ -200,7 +235,6 @@
       </div>
     </section>
 
-    <!-- About -->
     <section id="about" class="section">
       <h2>About Me</h2>
       <div class="two-col">
@@ -217,17 +251,20 @@
       </div>
     </section>
 
-    <!-- Research -->
     <section id="research" class="section">
       <h2>Research Focus</h2>
       <div class="three-col">
         <div class="card reveal">
           <h3>Interests</h3>
           <div class="chips">
-            <span class="chip">Biomaterials</span><span class="chip">Antibacterial Resistance</span>
-            <span class="chip">Regenerative Medicine</span><span class="chip">Wound Healing</span>
-            <span class="chip">Drug Delivery</span><span class="chip">Scaffold Fabrication</span>
-            <span class="chip">Rapid Hemostasis</span><span class="chip">Tissue Engineering</span>
+            <span class="chip">Biomaterials</span>
+            <span class="chip">Antibacterial Resistance</span>
+            <span class="chip">Regenerative Medicine</span>
+            <span class="chip">Wound Healing</span>
+            <span class="chip">Drug Delivery</span>
+            <span class="chip">Scaffold Fabrication</span>
+            <span class="chip">Rapid Hemostasis</span>
+            <span class="chip">Tissue Engineering</span>
           </div>
         </div>
         <div class="card reveal">
@@ -244,28 +281,28 @@
           <div class="meta">Supervisor: Prof. Dr. M Tarik Arafat (Mar 2021 – Apr 2022)</div>
           <p>Development of Tannic Acid Crosslinked Gelatin-CMC Based Electrospun Matrix with Antibacterial Properties.</p>
           <ul class="list">
-            <li>Developed tannic acid crosslinked gelatin/CMC matrices and assessed structural, physicochemical, and antibacterial properties against <em>S. aureus</em> and <em>E. coli</em>.</li>
+            <li>Developed tannic acid crosslinked gelatin/CMC matrices and assessed structural, physicochemical, and antibacterial properties against S. aureus and E. coli.</li>
           </ul>
         </div>
       </div>
-      <div class="card" style="margin-top:2rem;">
+      <div class="card" style="margin-top: 2rem;">
         <h3 class="kicker">Experimental Skills</h3>
         <ul class="list">
-          <li>Electrospun fiber and nanoparticle preparation; characterization (SEM, TEM, FTIR, XRD, DSC); statistical analysis.</li>
-          <li>Antibacterial assessments (serial dilution, MIC/MBC, disk diffusion, adhesion).</li>
-          <li>PL-based nanoparticle preparation and characterization.</li>
+          <li>Skilled in electrospun fiber and nanoparticle preparation, characterization (SEM, TEM, FTIR, XRD, DSC), and statistical analysis.</li>
+          <li>Antibacterial assessments against pathogenic and non-pathogenic strains using serial dilution, MIC/MBC, disk diffusion, and adhesion tests.</li>
+          <li>Preparation and characterization of PL-based nanoparticles.</li>
           <li>Decellularization of human amnion for biomedical applications.</li>
-          <li>Drug loading, release profiling, and delivery.</li>
+          <li>Drug loading, release profiling, and delivery research.</li>
           <li>Mechanical (tensile, compression) and rheological (swelling, degradation) studies.</li>
           <li>Biological assays: hemolysis, histology, anti-inflammatory, wound-healing tests.</li>
-          <li>Animal handling and in vivo studies with mice and rabbits.</li>
+          <li>Animal handling, anesthetization, and in vivo studies with mice and rabbits.</li>
           <li>Molecular docking and dynamics simulations.</li>
-          <li>Ethical proposals, research grants, and project proposals; training junior members.</li>
+          <li>Drafted ethical proposals, research grants, and project proposals.</li>
+          <li>Trained lab members on nanofiber synthesis and antibacterial testing.</li>
         </ul>
       </div>
     </section>
 
-    <!-- Publications -->
     <section id="publications" class="section">
       <h2>Publications</h2>
       <div class="pub-filter" role="toolbar" aria-label="Filter publications">
@@ -276,14 +313,11 @@
       <div class="list" id="pub-list">
         <article class="pub" data-status="published">
           <div class="kicker">Published</div>
-          <p><strong>Mechanistic study of unoxidized tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds.</strong>
-          <em>International Journal of Biological Macromolecules</em>, 330(Pt 1), 147837 (2025). Jinia, R. H., Datta, N., Wong, S. Y., Li, X., &amp; Arafat, M. T. DOI:
-          <a href="https://doi.org/10.1016/j.ijbiomac.2025.147837" target="_blank" rel="noopener">10.1016/j.ijbiomac.2025.147837</a></p>
+          <p><strong>Mechanistic study of unoxidized tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds.</strong> <em>International Journal of Biological Macromolecules</em>, 330(Pt 1), 147837 (2025). Jinia, R. H., Datta, N., Wong, S. Y., Li, X., &amp; Arafat, M. T. DOI: <a href="https://doi.org/10.1016/j.ijbiomac.2025.147837" target="_blank" rel="noopener">10.1016/j.ijbiomac.2025.147837</a></p>
         </article>
       </div>
     </section>
 
-    <!-- Experience -->
     <section id="experience" class="section">
       <h2>Professional Experience</h2>
       <div class="two-col">
@@ -291,161 +325,180 @@
           <h3>Senior Product Development Engineer</h3>
           <div class="meta"><a href="https://thebioltd.com/" target="_blank" rel="noopener">BioEnclave</a>, Bangladesh (Jul 2024 – Present)</div>
           <ul class="list">
-            <li>Optimized biological-material advanced wound dressings (CuraGel™; AmnioVive™) for regenerative medicine and non-healing diabetic wounds.</li>
-            <li>Coordinated clinical trials and pilot studies; managed data and regulatory compliance.</li>
-            <li>Co-led NITOR collaboration to design a foot-measurement device for pain assessment.</li>
+            <li>Optimized and prototyped biological material-based advanced wound dressings (PL-based CuraGel™ and decellularized human amniotic membrane-based AmnioVive™) for regenerative medicine applications aimed at treating non-healing diabetic wounds.</li>
+            <li>Coordinated and supervised clinical trials and pilot studies, managing data, collaborating with medical professionals, and ensuring ethical and regulatory compliance in Bangladesh.</li>
+            <li>Led a collaborative project with National Institute of Traumatology and Orthopaedic Rehabilitation (NITOR), Bangladesh to design a foot measurement machine, analyzing anatomical features to assess causes of foot pain.</li>
           </ul>
         </div>
         <div class="card reveal">
           <h3>Product Development Engineer</h3>
           <div class="meta">BioEnclave, Bangladesh (May 2023 – Jun 2024)</div>
           <ul class="list">
-            <li>Prototyped HemoSponge™, BioApta™, PowClot™, BioClotX™ to regulatory standards.</li>
-            <li>Market analyses informing product strategy and competitiveness.</li>
-            <li>Cross-functional coordination and production workflow optimization.</li>
+            <li>Developed and prototyped advanced medical-grade sponges (HemoSponge™), dental hydroxyapatite powder (BioApta™), hemostat powder (PowClot™, BioClotX™) achieving superior performance and regulatory standards.</li>
+            <li>Conducted market analysis to guide data-driven product development and competitiveness.</li>
+            <li>Coordinated cross-functional teams, managed timelines, and streamlined production workflows.</li>
           </ul>
         </div>
         <div class="card reveal">
           <h3>Teaching Assistant</h3>
           <div class="meta">Department of Biomedical Engineering, BUET (Nov 2022 – Apr 2023)</div>
           <ul class="list">
-            <li>Designed lab manuals and slides; ran tutorials and lab sessions; graded assessments.</li>
+            <li>Prepared lab manuals and presentation slides, and conducted tutorials, lab sessions.</li>
+            <li>Graded assignments, quizzes, and exams.</li>
+            <li>Coordinated and assisted in organizing educational workshops in BME department, BUET.</li>
           </ul>
         </div>
         <div class="card reveal">
-          <h3>Full-Time Research Assistant</h3>
-          <div class="meta">BioInnovation Research Group, BUET (Apr 2022 – Nov 2022)</div>
+          <h3>Full Time Research Assistant</h3>
+          <div class="meta">BioInnovation Research Group: Department of Biomedical Engineering, BUET (Apr 2022 – Nov 2022)</div>
           <ul class="list">
-            <li>Protocol development: bacterial adhesion, MIC/MBC, in vivo biodegradation.</li>
+            <li>Protocol development based on literature: Bacteria adhesion, MIC-MBC test, In vivo biodegradation.</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- Training -->
     <section id="training" class="section">
       <h2>Training, Internships &amp; Workshops</h2>
       <div class="two-col">
         <div class="card reveal">
-          <h3>Histopathological Techniques</h3>
+          <h3>Training on Histopathological Techniques for Biomedical Engineering Training</h3>
           <div class="meta">Sep 2023</div>
-          <p>Tissue harvesting, fixation, dehydration, embedding, sectioning, staining (H&amp;E, Masson’s trichrome, Picro Sirius red), and image analysis at BMU.</p>
+          <p>Learned hands-on experience in dealing with delicate tissue sample harvesting, fixation, dehydration, tissue embedding, sectioning, slide staining, and image analysis from Bangladesh Medical University (BMU). Obtained knowledge on different staining procedures including H&amp;E, Masson’s trichrome, Picro Sirius red stain.</p>
         </div>
         <div class="card reveal">
-          <h3>Sustainable Development &amp; Technology Transfer</h3>
+          <h3>Industrial Exposure on Sustainable Development and Technology Transfer</h3>
           <div class="meta">Feb 2023</div>
-          <p>Pharmaceutical manufacturing, QA, and regulatory exposure at DBL; sustainability practices at UNIDO Bangladesh.</p>
+          <p>Gained practical experience in pharmaceutical manufacturing, QA, and regulatory compliance at DBL, Bangladesh, with industrial exposure to sustainable practices at UNIDO, Bangladesh.</p>
         </div>
         <div class="card reveal">
-          <h3>Industrial Attachment Program</h3>
+          <h3>Industrial Attachment Program for Biomedical Engineers</h3>
           <div class="meta">Aug 2022</div>
-          <p>Dhaka Medical College &amp; Hospital: bone prosthetics exposure; device problem-finding.</p>
+          <p>Visited to Dhaka Medical College &amp; Hospital, to learn cutting-edge bone prosthetics. Got introduced to different medical devices and identified problems that are needed to solve.</p>
         </div>
         <div class="card reveal">
-          <h3>Laboratory Animals &amp; In Vivo Design</h3>
+          <h3>Training on Laboratory Animals for Designing Animal Experiment</h3>
           <div class="meta">Jun 2022</div>
-          <p>Dosing, anesthetization, gavage, blood collection in mice/rats/guinea pigs/rabbits at ICDDR,B.</p>
+          <p>Learned how to administer drugs to mice, rats, guinea pigs, and rabbits and maintain hygiene, breeding, anesthetization, and gavaging of animals, blood collection procedures from animals to design independent in vivo experimental protocols by International Center for Diarrhoeal Disease Bangladesh (ICDDR, B).</p>
         </div>
         <div class="card reveal">
-          <h3>Maternal &amp; Neonatal Health Internship</h3>
+          <h3>Internship on Maternal and Neonatal Health, ICDDR, B</h3>
           <div class="meta">Aug 2018</div>
-          <p>Clinical practice, maternal care, neonatal assessment, and public health strategies (icddr,b).</p>
+          <p>Completed training in Maternal and Neonatal Health at icddr,b, gaining knowledge in clinical practices, maternal care, neonatal assessment, and public health strategies.</p>
         </div>
       </div>
     </section>
 
-    <!-- Projects -->
     <section id="projects" class="section">
       <h2>Projects</h2>
       <div class="three-col">
         <div class="card reveal">
-          <h3>Medical Device Innovation</h3>
+          <h3>Medical Device Innovation Project</h3>
           <div class="meta">Jan 2024</div>
-          <p>Foot-measurement device emphasizing usability, comfort, and accurate data capture; cross-disciplinary collaboration for feasibility.</p>
+          <p>Foot Measurement Device Innovation in Medical Technology. Designed the device with a focus on user-friendliness and ease of operation, ensuring patient comfort and accurate data collection. Collaborated with engineers and other stakeholders to ensure the technical feasibility and functionality of the design.</p>
         </div>
         <div class="card reveal">
-          <h3>ICT Division Funded Project</h3>
+          <h3>Project funded by the ICT Division, Bangladesh</h3>
           <div class="meta">Mar 2022</div>
-          <p>Real-time neonatal sleep-apnea detection (accelerometer); HIS-integrated, clinical-grade remote monitoring concept.</p>
+          <p>Integrated System for Real-Time Neonatal Sleep Apnea Detection Based on the Acceleration Sensor. Proposed and developed an HIS integrated clinical-grade apnea detection device using an accelerometer that can assist doctors in remote patient monitoring while also being a lower-cost alternative to the neonatal ventilators and SPO2 monitors.</p>
         </div>
         <div class="card reveal">
-          <h3>Capstone: PCG Heart-Rate Estimation</h3>
+          <h3>Capstone Project</h3>
           <div class="meta">Dec 2020</div>
-          <p>Heart-rate estimation from fetal phonocardiogram aligned to NICU practice at DMC.</p>
+          <p>Heart Rate Estimation from Fetal Phono-cardiogram. Developed a method for estimating children's heart rates using phonocardiogram in partnership with the NICU standards at Dhaka Medical College (DMC), Bangladesh, aiding clinicians in remote areas to identify irregularities and assist in illness diagnosis.</p>
         </div>
         <div class="card reveal">
-          <h3>Capstone: Milk Pasteurization Device</h3>
+          <h3>Capstone Project</h3>
           <div class="meta">Sep 2019</div>
-          <p>Affordable pasteurization device for garment-industry workers; Arduino-based design and testing.</p>
+          <p>Enhancing Maternal and Infant Health: A Milk Pasteurization Device for Garment Industry Employees in Bangladesh. Developed a device-based solution for safe pasteurization of mothers’ milk to improve maternal and infant health among garment industry employees in Bangladesh. Involved design, testing, and implementation strategies to ensure accessibility and hygiene standards. Implemented by using Arduino.</p>
         </div>
         <div class="card reveal">
-          <h3>Capstone: Ocular Drug-Delivery Simulation</h3>
+          <h3>Capstone Project</h3>
           <div class="meta">Jul 2019</div>
-          <p>Drug release via contact-lens simulation for intraocular delivery.</p>
+          <p>Simulation of Drug Delivery Through Intraocular System Released from Contact Lens.</p>
         </div>
       </div>
     </section>
 
-    <!-- Skills -->
     <section id="skills" class="section">
       <h2>Skills &amp; Tools</h2>
       <div class="two-col">
         <div class="card reveal">
           <h3>Programming Languages</h3>
           <div class="chips">
-            <span class="chip">MATLAB</span><span class="chip">C</span><span class="chip">Python</span>
-            <span class="chip">Arduino</span><span class="chip">8086 Assembly</span>
+            <span class="chip">MATLAB</span>
+            <span class="chip">C</span>
+            <span class="chip">Python</span>
+            <span class="chip">Arduino</span>
+            <span class="chip">Assembly language of 8086 microprocessor</span>
           </div>
         </div>
         <div class="card reveal">
           <h3>Simulation</h3>
           <div class="chips">
-            <span class="chip">SolidWorks</span><span class="chip">Simulink</span><span class="chip">ANSYS</span>
-            <span class="chip">COMSOL</span><span class="chip">Proteus</span>
+            <span class="chip">Solidworks</span>
+            <span class="chip">Simulink</span>
+            <span class="chip">Ansys</span>
+            <span class="chip">Comsol Multiphysics</span>
+            <span class="chip">Proteus</span>
           </div>
         </div>
       </div>
-      <div class="card" style="margin-top:2rem;">
+      <div class="card" style="margin-top: 2rem;">
         <h3>Molecular Dynamics</h3>
-        <div class="chips"><span class="chip">AutoDock Vina</span><span class="chip">GROMACS</span><span class="chip">PyMOL</span><span class="chip">BIOVIA</span></div>
+        <div class="chips">
+          <span class="chip">Autodock Vina</span>
+          <span class="chip">Gromacs</span>
+          <span class="chip">Pymol</span>
+          <span class="chip">Biovia</span>
+        </div>
       </div>
-      <div class="card" style="margin-top:2rem;">
-        <h3>Graphing &amp; Reference</h3>
-        <div class="chips"><span class="chip">OriginLab</span><span class="chip">Minitab</span><span class="chip">Discovery Studio</span><span class="chip">LigPlot</span><span class="chip">ImageJ</span><span class="chip">ChemSketch</span></div>
+      <div class="card" style="margin-top: 2rem;">
+        <h3>Graphing &amp; Reference Software</h3>
+        <div class="chips">
+          <span class="chip">OriginLab</span>
+          <span class="chip">Minitab</span>
+          <span class="chip">Discovery Studio</span>
+          <span class="chip">LigPlot</span>
+          <span class="chip">ImageJ</span>
+          <span class="chip">Chemsketch</span>
+        </div>
       </div>
-      <div class="card" style="margin-top:2rem;">
-        <h3>Other</h3>
-        <div class="chips"><span class="chip">Microsoft Office</span><span class="chip">Adobe Illustrator</span><span class="chip">Adobe Photoshop</span></div>
+      <div class="card" style="margin-top: 2rem;">
+        <h3>Others</h3>
+        <div class="chips">
+          <span class="chip">Microsoft Office</span>
+          <span class="chip">Adobe Illustrator</span>
+          <span class="chip">Adobe Photoshop</span>
+        </div>
       </div>
     </section>
 
-    <!-- Awards -->
     <section id="awards" class="section">
       <h2>Awards &amp; Leadership</h2>
       <div class="two-col">
         <div class="card reveal">
           <h3>Awards &amp; Honors</h3>
           <ul class="list">
-            <li>Dean’s List — BUET (2017, 2021, 2022)</li>
-            <li>University Merit Scholarship — Top 10% CGPA (2021–2022)</li>
-            <li>Govt. Merit Scholarship — Ministry of Education (2008, 2011, 2014, 2016)</li>
-            <li>1st — Bangladesh Mathematical Olympiad (2014)</li>
-            <li>2nd — National Essay Competition (2013)</li>
-            <li>3rd — National Art Competition (2012)</li>
+            <li>Dean’s List Award for Excellent Scholarly Achievement- 3 Levels of Study — Bangladesh University of Engineering and Technology (2017, 2021, 2022)</li>
+            <li>University Merit Scholarship, Academic honor by BUET — For achieving the top 10% CGPA (2021-2022)</li>
+            <li>Govt. Merit Scholarship, Award by Ministry of Education, Bangladesh (2008, 2011, 2014, 2016)</li>
+            <li>1st Position in Bangladesh Mathematical Olympiad (BdMO) (2014)</li>
+            <li>2nd Position in National Essay writing Competition by Ministry of Cultural Affairs (2013)</li>
+            <li>3rd Position in National Art Competition by Ministry of Cultural Affairs (2012)</li>
           </ul>
         </div>
         <div class="card reveal">
           <h3>Leadership &amp; Extracurricular</h3>
           <ul class="list">
-            <li>Led and trained 4 junior engineers; guided 2 IBA interns on commercialization.</li>
-            <li>Article: “Healthcare 4.0: Unlocking the Promise of Automation in Bangladesh” (2025).</li>
-            <li>Member — Charcoal: BUET Artista Society (2020–2022).</li>
+            <li>Led and trained 4 junior product development engineers and guided 2 IBA interns in market analysis for biomedical products commercialization.</li>
+            <li>Article Author, Industry Insider, Bangladesh — "Healthcare 4.0: Unlocking the Promise of Automation in Bangladesh" (2025)</li>
+            <li>Member, Charcoal – BUET Artista Society (2020-2022)</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- Contact -->
     <section id="contact" class="section">
       <h2>Contact</h2>
       <div class="card reveal">
@@ -461,61 +514,88 @@
     </footer>
   </main>
 
-  <noscript>
-    <div class="container" style="margin-top:1rem">
-      <div class="card" role="status">This site works without JavaScript, but animations and filters are disabled.</div>
-    </div>
-  </noscript>
-
   <script>
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Mobile menu with focus restore + Esc
+    // Mobile menu: open/close + focus restore + Esc-to-close
     const menuBtn = document.getElementById('menuBtn');
     const nav = document.getElementById('primaryNav');
     let lastFocus = null;
-    function openNav(){ lastFocus=document.activeElement; nav.classList.add('open'); menuBtn.setAttribute('aria-expanded','true'); nav.querySelector('a')?.focus(); }
-    function closeNav(){ nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); lastFocus?.focus(); }
-    menuBtn.addEventListener('click',()=> menuBtn.getAttribute('aria-expanded')==='true'?closeNav():openNav());
-    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ if(window.innerWidth<900) closeNav(); }));
-    document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeNav(); });
 
-    // Publication filter (a11y)
+    function openNav() {
+      lastFocus = document.activeElement;
+      nav.classList.add('open');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      const firstLink = nav.querySelector('a');
+      if (firstLink) firstLink.focus();
+    }
+    function closeNav() {
+      nav.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      if (lastFocus) lastFocus.focus();
+    }
+
+    menuBtn.addEventListener('click', () => {
+      const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
+      isOpen ? closeNav() : openNav();
+    });
+
+    // Close the menu after clicking a link on small screens (≤1100px)
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      if (window.innerWidth <= 1100) closeNav();
+    }));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeNav();
+    });
+
+    // Publication filter: accessible state + live updates
     const pubButtons = document.querySelectorAll('.pub-filter button');
     const pubs = document.querySelectorAll('#pub-list .pub');
     const pubStatus = document.getElementById('pub-status');
-    pubButtons.forEach(btn=>btn.addEventListener('click',()=>{
+
+    pubButtons.forEach(btn => btn.addEventListener('click', () => {
       const filter = btn.dataset.filter;
-      pubs.forEach(pub=>{ const show=(filter==='all'||pub.dataset.status===filter); pub.style.display = show ? '' : 'none'; });
-      pubButtons.forEach(b=>b.setAttribute('aria-pressed', String(b===btn)));
-      const visible = [...pubs].filter(p=>p.style.display!=='none').length;
-      pubStatus.textContent = `${visible} item${visible!==1?'s':''} shown (${filter})`;
+      pubs.forEach(pub => {
+        const show = (filter === 'all' || pub.dataset.status === filter);
+        pub.style.display = show ? '' : 'none';
+      });
+      pubButtons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      const visible = [...pubs].filter(p => p.style.display !== 'none').length;
+      pubStatus.textContent = `${visible} item${visible !== 1 ? 's' : ''} shown (${filter})`;
     }));
 
-    // Reveal on scroll (prefers-reduced-motion respected)
+    // Reveal on scroll (respect reduced motion)
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target); }});
-      },{threshold:0.2});
-      document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-    }
-
-    // Scroll-spy: add .active and aria-current="page"
-    const sections = [...document.querySelectorAll('.hero, main .section')];
-    const navLinks = [...document.querySelectorAll('nav.primary a')];
-    const linkFor = id => navLinks.find(a => a.getAttribute('href') === `#${id}`);
-    if ('IntersectionObserver' in window) {
-      const spy = new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{
-          if(entry.isIntersecting){
-            navLinks.forEach(a=>{ a.classList.remove('active'); a.removeAttribute('aria-current'); });
-            const link = linkFor(entry.target.id);
-            if(link){ link.classList.add('active'); link.setAttribute('aria-current','page'); }
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
           }
         });
-      },{rootMargin:'-40% 0px -55% 0px'});
-      sections.forEach(sec=>sec.id && spy.observe(sec));
+      }, { threshold: 0.2 });
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    // Scroll-spy: highlight current section in nav
+    const sections = [...document.querySelectorAll('.hero, main .section')];
+    const navLinks = [...document.querySelectorAll('nav.primary a')];
+    const linkFor = (id) => navLinks.find(a => a.getAttribute('href') === `#${id}`);
+
+    if ('IntersectionObserver' in window) {
+      const spy = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(a => a.classList.remove('active'));
+            const link = linkFor(entry.target.id);
+            if (link) link.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+      sections.forEach(sec => sec.id && spy.observe(sec));
     }
   </script>
 </body>
