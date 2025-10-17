@@ -65,7 +65,7 @@
     /* Global layout + horizontal overflow guard */
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    html, body { overflow-x: hidden; }             /* ← prevents accidental sideways scroll */
+    html, body { overflow-x: hidden; }
     body { margin: 0; font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; }
     img, svg, video { max-width: 100%; height: auto; display: block; }
     a { color: var(--link); text-decoration: none; }
@@ -77,7 +77,7 @@
     .nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; }
     .brand { font-size: 1.4rem; font-weight: 700; color: var(--text); white-space: nowrap; }
 
-    nav.primary { display: flex; gap: 0.8rem; }     /* tighter gap on desktop */
+    nav.primary { display: flex; gap: 0.8rem; }
     nav.primary a { color: var(--muted); padding: 0.5rem 0.8rem; font-weight: 500; border-radius: 0.5rem; transition: all 0.2s ease; }
     nav.primary a:hover, nav.primary a:focus { color: var(--link); background: var(--chip); }
     nav.primary a.active { color: var(--link); border-bottom: 3px solid var(--link); }
@@ -104,14 +104,12 @@
     /* Hero */
     .hero { padding: 4rem 0; background: linear-gradient(135deg, var(--accent-start), var(--accent-end)); text-align: center; color: #fff; }
     .hero-content { max-width: 800px; margin: 0 auto; }
-    .hero .name { 
-      font-size: clamp(2.2rem, 6vw, 3.5rem); 
-      margin: 0 0 0.4rem; 
-      white-space: nowrap;                       /* ← keep on one line */
+    .hero .name {
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      margin: 0 0 0.4rem;
+      white-space: nowrap; /* keep on one line */
     }
-    @media (max-width: 360px) {                  /* safety on ultra-small devices */
-      .hero .name { white-space: normal; }
-    }
+    @media (max-width: 360px) { .hero .name { white-space: normal; } }
     .hero .headline { font-size: clamp(1.2rem, 3.5vw, 1.8rem); font-weight: 600; }
     .lead { color: #e6f6f3; max-width: 70ch; margin: 1rem auto; }
     .cta { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.7rem 1.4rem; border: 2px solid #fff; border-radius: 0.75rem; font-weight: 600; color: #fff; background: rgba(255, 255, 255, 0.1); transition: all 0.3s ease; }
@@ -132,10 +130,11 @@
     @media (min-width: 900px) { .three-col { grid-template-columns: repeat(3, 1fr); } }
     .meta { color: var(--muted); font-size: 1rem; margin-bottom: 0.7rem; }
     .chips { display: flex; flex-wrap: wrap; gap: 0.8rem; }
-    .chip { background: var(--chip); border: 2px solid var(--link); padding: 0.4rem 1rem; border-radius: 1.5rem; font-size: 1rem; color: var(--link); transition: background 0.2s; }
+    .chips.column { flex-direction: column; align-items: flex-start; } /* single column interests */
+    .chip { background: var(--chip); border: 2px solid var(--link); padding: 0.35rem 0.9rem; border-radius: 1.5rem; font-size: 1rem; color: var(--link); transition: background 0.2s; display: inline-block; }
     .chip:hover { background: var(--accent-start); }
     .list { list-style-type: disc; padding-left: 1.8rem; margin: 0.7rem 0; }
-    .list li { margin-bottom: 0.7rem; overflow-wrap: anywhere; } /* guard long text */
+    .list li { margin-bottom: 0.7rem; overflow-wrap: anywhere; }
     .kicker { text-transform: uppercase; font-size: 0.9rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 0.7rem; }
 
     /* Publications */
@@ -239,7 +238,7 @@
       <h2>About Me</h2>
       <div class="two-col">
         <div class="card reveal">
-          <p>I hold an M.Sc. in Biomedical Engineering from BUET, where my thesis explored tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds. This work involved developing dual-functional biomaterials that promote wound healing while managing infections through in vitro, in vivo, and in silico evaluations. As a Senior Product Development Engineer at BioEnclave—a company dedicated to regenerative healthcare solutions—I optimize advanced wound dressings like CuraGel™ and AmnioVive™, coordinating clinical trials and collaborating on innovative medical devices. With hands-on experience in electrospinning, nanoparticle synthesis, and molecular simulations, I'm eager to pursue a Ph.D. to further advance drug delivery and tissue engineering in resource-constrained settings.</p>
+          <p>I hold an M.Sc. in Biomedical Engineering from BUET, where my thesis explored tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds. This work involved developing dual-functional biomaterials that promote wound healing while managing infections through in vitro, in vivo, and in silico evaluations. As a Senior Product Development Engineer at <a href="https://thebioltd.com/" target="_blank" rel="noopener">BioEnclave</a>—a company dedicated to regenerative healthcare solutions—I optimize advanced wound dressings like CuraGel™ and AmnioVive™, coordinating clinical trials and collaborating on innovative medical devices. With hands-on experience in electrospinning, nanoparticle synthesis, and molecular simulations, I'm eager to pursue a Ph.D. to further advance drug delivery and tissue engineering in resource-constrained settings.</p>
         </div>
         <div class="card reveal">
           <h3>Education</h3>
@@ -256,21 +255,21 @@
       <div class="three-col">
         <div class="card reveal">
           <h3>Interests</h3>
-          <div class="chips">
+          <div class="chips column">
             <span class="chip">Biomaterials</span>
-            <span class="chip">Antibacterial Resistance</span>
-            <span class="chip">Regenerative Medicine</span>
+            <span class="chip">Tissue Engineering</span>
             <span class="chip">Wound Healing</span>
             <span class="chip">Drug Delivery</span>
-            <span class="chip">Scaffold Fabrication</span>
+            <span class="chip">Antibacterial Resistance</span>
             <span class="chip">Rapid Hemostasis</span>
-            <span class="chip">Tissue Engineering</span>
+            <span class="chip">Scaffold Fabrication</span>
           </div>
         </div>
         <div class="card reveal">
           <h3>M.Sc. Thesis</h3>
-          <div class="meta">Supervisor: Prof. Dr. M Tarik Arafat (Jul 2022 – Sep 2024)</div>
           <p>Fabrication of Tannic Acid Crosslinked Gelatin-CMC Based Electrospun Matrix for Combatting Antibacterial Resistance in Infected Wounds.</p>
+          <p class="meta"><strong>Supervisor:</strong> <a href="https://bme.buet.ac.bd/profile/muhammad-tarik-arafat/" target="_blank" rel="noopener">Prof. Dr. M Tarik Arafat</a></p>
+          <p class="meta"><strong>Timeline:</strong> Jul 2022 – Sep 2024</p>
           <ul class="list">
             <li>Developed a dual-functional biomaterial platform for infection management and regenerative medicine.</li>
             <li>Evaluated physicochemical, antibacterial (in vitro and in vivo), biocompatibility, and wound healing properties with in silico modeling.</li>
@@ -278,13 +277,15 @@
         </div>
         <div class="card reveal">
           <h3>B.Sc. Thesis</h3>
-          <div class="meta">Supervisor: Prof. Dr. M Tarik Arafat (Mar 2021 – Apr 2022)</div>
           <p>Development of Tannic Acid Crosslinked Gelatin-CMC Based Electrospun Matrix with Antibacterial Properties.</p>
+          <p class="meta"><strong>Supervisor:</strong> <a href="https://bme.buet.ac.bd/profile/muhammad-tarik-arafat/" target="_blank" rel="noopener">Prof. Dr. M Tarik Arafat</a></p>
+          <p class="meta"><strong>Timeline:</strong> Mar 2021 – Apr 2022</p>
           <ul class="list">
-            <li>Developed tannic acid crosslinked gelatin/CMC matrices and assessed structural, physicochemical, and antibacterial properties against S. aureus and E. coli.</li>
+            <li>Developed tannic acid crosslinked gelatin/CMC matrices and assessed structural, physicochemical, and antibacterial properties against <em>S. aureus</em> and <em>E. coli</em>.</li>
           </ul>
         </div>
       </div>
+
       <div class="card" style="margin-top: 2rem;">
         <h3 class="kicker">Experimental Skills</h3>
         <ul class="list">
@@ -315,6 +316,12 @@
           <div class="kicker">Published</div>
           <p><strong>Mechanistic study of unoxidized tannic acid crosslinked gelatin-CMC electrospun matrices for combating antibacterial resistance in infected wounds.</strong> <em>International Journal of Biological Macromolecules</em>, 330(Pt 1), 147837 (2025). Jinia, R. H., Datta, N., Wong, S. Y., Li, X., &amp; Arafat, M. T. DOI: <a href="https://doi.org/10.1016/j.ijbiomac.2025.147837" target="_blank" rel="noopener">10.1016/j.ijbiomac.2025.147837</a></p>
         </article>
+
+        <article class="pub" data-status="published">
+          <div class="kicker">Published — Article</div>
+          <p><strong><a href="https://industryinsiderbd.com/impressive-biomedical-progress-reshaping-bangladeshs-healthcare/" target="_blank" rel="noopener">Impressive Biomedical Progress: Reshaping Bangladesh’s Healthcare</a></strong>. <em>Industry Insider Bangladesh</em> (2025).</p>
+          <p class="summary">An accessible overview of how biomedical R&amp;D and productization are transforming care delivery in Bangladesh.</p>
+        </article>
       </div>
     </section>
 
@@ -332,7 +339,7 @@
         </div>
         <div class="card reveal">
           <h3>Product Development Engineer</h3>
-          <div class="meta">BioEnclave, Bangladesh (May 2023 – Jun 2024)</div>
+          <div class="meta"><a href="https://thebioltd.com/" target="_blank" rel="noopener">BioEnclave</a>, Bangladesh (May 2023 – Jun 2024)</div>
           <ul class="list">
             <li>Developed and prototyped advanced medical-grade sponges (HemoSponge™), dental hydroxyapatite powder (BioApta™), hemostat powder (PowClot™, BioClotX™) achieving superior performance and regulatory standards.</li>
             <li>Conducted market analysis to guide data-driven product development and competitiveness.</li>
@@ -341,7 +348,7 @@
         </div>
         <div class="card reveal">
           <h3>Teaching Assistant</h3>
-          <div class="meta">Department of Biomedical Engineering, BUET (Nov 2022 – Apr 2023)</div>
+          <div class="meta"><a href="https://bme.buet.ac.bd/" target="_blank" rel="noopener">Department of Biomedical Engineering</a>, BUET (Nov 2022 – Apr 2023)</div>
           <ul class="list">
             <li>Prepared lab manuals and presentation slides, and conducted tutorials, lab sessions.</li>
             <li>Graded assignments, quizzes, and exams.</li>
@@ -350,7 +357,7 @@
         </div>
         <div class="card reveal">
           <h3>Full Time Research Assistant</h3>
-          <div class="meta">BioInnovation Research Group: Department of Biomedical Engineering, BUET (Apr 2022 – Nov 2022)</div>
+          <div class="meta">BioInnovation Research Group: <a href="https://bme.buet.ac.bd/" target="_blank" rel="noopener">Department of Biomedical Engineering</a>, BUET (Apr 2022 – Nov 2022)</div>
           <ul class="list">
             <li>Protocol development based on literature: Bacteria adhesion, MIC-MBC test, In vivo biodegradation.</li>
           </ul>
@@ -492,7 +499,7 @@
           <h3>Leadership &amp; Extracurricular</h3>
           <ul class="list">
             <li>Led and trained 4 junior product development engineers and guided 2 IBA interns in market analysis for biomedical products commercialization.</li>
-            <li>Article Author, Industry Insider, Bangladesh — "Healthcare 4.0: Unlocking the Promise of Automation in Bangladesh" (2025)</li>
+            <li>Article Author — <a href="https://industryinsiderbd.com/impressive-biomedical-progress-reshaping-bangladeshs-healthcare/" target="_blank" rel="noopener">Impressive Biomedical Progress: Reshaping Bangladesh’s Healthcare</a> (<em>Industry Insider Bangladesh</em>, 2025)</li>
             <li>Member, Charcoal – BUET Artista Society (2020-2022)</li>
           </ul>
         </div>
